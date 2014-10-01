@@ -1,23 +1,20 @@
 <?php
 
-
-
 class Pages_RSSFoodle extends Pages_Page {
-		
+
 	function __construct($config, $parameters) {
 		parent::__construct($config, $parameters);
-		
+
 		if (count($parameters) < 1) throw new Exception('Missing [foodleid] parameter in URL.');
-		
+
 		Data_Foodle::requireValidIdentifier($parameters[0]);
 		$this->foodleid = $parameters[0];
 		$this->foodlepath = '/foodle/' . $this->foodleid;
-		
+
 		$this->foodle = $this->fdb->readFoodle($this->foodleid);
-		
 	}
-	
-	
+
+
 	private static function encodeSingleResponse($r) {
 		if ($r == 1) {
 			return '☒';
@@ -32,10 +29,9 @@ class Pages_RSSFoodle extends Pages_Page {
 		}
 		return join(' ', $k);
 	}
-	
+
 	// Process the page.
 	function show() {
-
 
 		$url = FoodleUtils::getUrl() . 'foodle/' . $this->foodle->identifier;
 
@@ -43,12 +39,12 @@ class Pages_RSSFoodle extends Pages_Page {
 		$rssentries = array();
 		foreach ($responses AS $response) {
 			#echo '<pre>'; print_r($response); echo '</pre>';
-			
+
 			$newrssentry = array(
 				'title' => $response->username,
 				'description' => 'Response: ' . self::encodeResponse($response->response['data']),
 				'pubDate' => $response->created,
-	#			'link' => $url, 
+	#			'link' => $url,
 			);
 			if (isset($entry['notes'])) {
 				$newrssentry['description'] .= '<br /><strong>Comment from user: </strong><i>' . $response->notes . '</i>';
@@ -62,12 +58,8 @@ class Pages_RSSFoodle extends Pages_Page {
 		#$rss->description = $this->foodle->description;
 		$rsstext = $rss->get($rssentries);
 
-
 		header('Content-Type: text/xml');
 		echo $rsstext;
-
-
 	}
-	
-}
 
+}

@@ -1,19 +1,14 @@
 <?php
 
-
-
 class Pages_FixDate extends Pages_PageFoodle {
-	
-	
-	
+
 	function __construct($config, $parameters) {
 		parent::__construct($config, $parameters);
-		
+
 		$this->timezone = new TimeZone($this->fdb);
-		
+
 		$this->foodle->acl($this->user, 'write');
 	}
-	
 
 	protected function saveChanges() {
 
@@ -21,7 +16,7 @@ class Pages_FixDate extends Pages_PageFoodle {
 #		echo '<pre>'; print_r($_REQUEST); print_r($this->foodle); exit;
 		$this->foodle->acl($this->user, 'write');
 		$this->foodle->save();
-		
+
 // 		if (isset($this->user->email)) {
 // 			$this->sendMail();
 // 		}
@@ -29,25 +24,23 @@ class Pages_FixDate extends Pages_PageFoodle {
 		if (!empty($_REQUEST['send_fixdate_mail'])) {
 
 			$responses = $this->foodle->getResponses();
-			
+
 			foreach($responses AS $response) {
-				
+
 				$user = null;
 				if (!empty($response->user)) $user = $response->user;
-				
+
 				if (empty($user)) {
 					$user = new Data_User($this->fdb);
 					$user->userid = $response->userid;
 					$user->email = $response->email;
 					$user->username = $response->username;
 				}
-				
-				$this->sendFixDateMail($user, $this->foodle);
-				
-			}
 
+				$this->sendFixDateMail($user, $this->foodle);
+			}
 		}
-		
+
 		$newurl = FoodleUtils::getUrl() . 'foodle/' . $this->foodle->identifier . '#distribute';
 		SimpleSAML_Utilities::redirect($newurl);
 		exit;
@@ -55,12 +48,12 @@ class Pages_FixDate extends Pages_PageFoodle {
 
 	protected function presentInTimeZone() {
 	}
-	
+
 	// Process the page.
 	function show() {
 
 		if (isset($_REQUEST['save'])) $this->saveChanges();
-		
+
 		if (isset($_REQUEST['col'])) {
 			$this->foodle->fixDate($_REQUEST['col']);
 		}
@@ -69,14 +62,13 @@ class Pages_FixDate extends Pages_PageFoodle {
 
 		$t->data['authenticated'] = $this->auth->isAuth();
 		$t->data['user'] = $this->user;
-		
+
 		$t->data['timezone'] = $this->timezone;
 		$t->data['ftimezone'] = $this->foodle->timezone;
 
 		$t->data['name'] = $this->foodle->name;
 		$t->data['identifier'] = $this->foodle->identifier;
 		$t->data['descr'] = $this->foodle->descr;
-		
 
 		$t->data['foodle'] = $this->foodle;
 
@@ -84,39 +76,34 @@ class Pages_FixDate extends Pages_PageFoodle {
 		$t->data['tomorrow'] = date('Y-m-d', time() + 60*60*24 );
 
 		$t->data['bread'] = array(
-			array('href' => '/', 'title' => 'bc_frontpage'), 
-			array('href' => '/foodle/' . $this->foodle->identifier . '#responses', 'title' => $this->foodle->name), 
+			array('href' => '/', 'title' => 'bc_frontpage'),
+			array('href' => '/foodle/' . $this->foodle->identifier . '#responses', 'title' => $this->foodle->name),
 			array('title' => 'Fix timeslot')
 		);
+
 		$t->show();
-
-
 	}
-	
-	
-	
+
 	protected function sendFixDateMail($user, $foodle) {
-	
+
 		if (!$this->user->notification('invite', TRUE)) {
 			error_log('Foodle response was added, but mail notification was not sent because of users preferences');
 			return;
 		}
 		error_log('Sending Foodle fixdate to ' . $user->email);
-		
-		
-	
+
 		$profileurl = FoodleUtils::getUrl() . 'profile/';
 		$url = FoodleUtils::getUrl() . 'foodle/' . $foodle->identifier;
 		$name = 'Date and time set for ' . $foodle->name;
-		
+
 		if (empty($user->email)) {
 			error_log('Was not able to send e-mail notification to ' . $user->userid . ' because email address was missing');
 			return;
 		}
-		
+
 		$to = $user->email;
-//		$to = 'andreassolberg@gmail.com'; 
-		
+//		$to = 'andreassolberg@gmail.com';
+
 		$datetimetext = '';
 		$extralinks = '';
 		if (!empty($foodle->datetime)) {
@@ -125,7 +112,7 @@ class Pages_FixDate extends Pages_PageFoodle {
 			$datetimetext = "\n\n### Date and time\n\n" . $foodle->datetimeText($tz->getTimeZone());
 			$extralinks = "\n* Import to your calendar using the attached calendar file";
 		}
-		
+
 		$mail = $foodle->descr . '
 
 ### Confirm your participation
@@ -144,7 +131,7 @@ You may also create new Foodles on your own, and invite others to respond.
 		';
 		$mailer = new Foodle_EMail($to, htmlspecialchars($name), 'Foodl.org <no-reply@foodl.org>');
 		$mailer->setBody($mail);
-		
+
 		if (!empty($foodle->datetime)) {
 			$url = FoodleUtils::getUrl() . 'foodle/' . $foodle->identifier . '?output=ical';
 			$ics = file_get_contents($url);
@@ -152,11 +139,6 @@ You may also create new Foodles on your own, and invite others to respond.
 		} else {
 			$mailer->send();
 		}
-
-
 	}
 
-	
-	
 }
-

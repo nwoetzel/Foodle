@@ -1,19 +1,19 @@
 <?php
 
 class Pages_PageCreate extends Pages_Page {
-	
+
 	private $user;
 	private $auth;
-	
+
 	private $timezone;
-	
+
 	function __construct($config, $parameters) {
 		parent::__construct($config, $parameters);
 		$this->auth();
-		
+
 		$this->timezone = new TimeZone($this->fdb, NULL, $this->user);
 	}
-	
+
 	// Authenticate the user
 	private function auth() {
 		$this->auth = new FoodleAuth($this->fdb);
@@ -21,34 +21,31 @@ class Pages_PageCreate extends Pages_Page {
 
 		$this->user = $this->auth->getUser();
 	}
-	
-	
+
 	function addEntry() {
-	
+
 		$foodle = new Data_Foodle($this->fdb);
 		$foodle->updateFromPost($this->user);
 		#echo '<pre>'; print_r($foodle); exit;
 		$foodle->save();
-		
+
 		if (isset($this->user->email)) {
 			$this->sendMail($foodle);
 		}
-		
+
 		$newurl = FoodleUtils::getUrl() . 'foodle/' . $foodle->identifier . '#distribute';
 		SimpleSAML_Utilities::redirect($newurl);
 		exit;
-
 	}
-	
+
 	protected function sendMail($foodle) {
-	
+
 		if (!$this->user->notification('newfoodle', FALSE)) {
 			error_log('Foodle was updated, but mail notification was not sent because of users preferences');
 			return;
 		}
 		error_log('Foodle was updated, sending notification!');
-		
-		
+
 		$profileurl = FoodleUtils::getUrl() . 'profile/';
 		$url = FoodleUtils::getUrl() . 'foodle/' . $foodle->identifier;
 		$name = $foodle->name;
@@ -68,7 +65,7 @@ If you want so invite others to respond to this Foodle, you should share the lin
 
 ### Notifications
 
-You can turn of this e-mail notification, and configure other notification messages <a href="' . 
+You can turn of this e-mail notification, and configure other notification messages <a href="' .
 	htmlspecialchars($profileurl) . '">from your Foodle preference page</a>:
 
 	' . htmlspecialchars($profileurl) . '
@@ -84,12 +81,10 @@ You may also create new Foodles on your own, and invite others to respond.
 		$mailer = new Foodle_EMail($to, 'New foodle: ' . htmlspecialchars($name), 'Foodl.org <no-reply@foodl.org>');
 		$mailer->setBody($mail);
 		$mailer->send();
-		
-		#echo '<pre>'; print_r($mail); exit;
 
+		#echo '<pre>'; print_r($mail); exit;
 	}
-	
-	
+
 	// Process the page.
 	function show() {
 
@@ -99,20 +94,19 @@ You may also create new Foodles on your own, and invite others to respond.
 
 		$t->data['optimize'] = $this->config->getValue('optimize', false);
 		$t->data['gmapsAPI'] = $this->config->getValue('gmapsAPI');
-		
-		$t->data['user'] = $this->user;	
+
+		$t->data['user'] = $this->user;
 		$t->data['userToken'] = $this->user->getToken();
 		$t->data['loginurl'] = $this->auth->getLoginURL();
 		$t->data['logouturl'] = $this->auth->getLogoutURL('/');
 		$t->data['authenticated'] = $this->auth->isAuth();
 
 		$t->data['bread'] = array(
-			array('href' => '/', 'title' => 'bc_frontpage'), 
+			array('href' => '/', 'title' => 'bc_frontpage'),
 			array('title' => 'bc_createnew')
 		);
+
 		$t->show();
-
 	}
-	
-}
 
+}
