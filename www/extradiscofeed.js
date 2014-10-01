@@ -39,5 +39,3 @@
 		'keywords': ['GEANT', 'Dante']
 	}
 ]
-
-	

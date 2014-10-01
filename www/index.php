@@ -3,7 +3,6 @@
 $THISPATH = dirname(dirname(__FILE__)) . '/';
 require_once($THISPATH . 'lib/Timer.php');
 
-
 Timer::start();
 Timer::tick('started');
 
@@ -24,11 +23,10 @@ $availableLanguages = json_decode(file_get_contents($THISPATH . 'dictionaries/la
 
 // print_r( $availableLanguages); exit;
 
-
 try {
-	
+
 	$action = array_shift($parameters);
-	
+
 	switch($action) {
 
 		case '':
@@ -36,86 +34,83 @@ try {
 			$page->show();
 			break;
 
-
-
-
 		case 'calendar':
 			if (count($parameters) !== 3) throw new Exception('Missing parameter');
-			
+
 			$type = array_shift($parameters);
 			$user = array_shift($parameters);
 			$token = array_shift($parameters);
-			
+
 			$calendar = new Calendar_CalendarUser($config, $user, $token);
 			$calendar->show();
-			
+
 			break;
-		
+
 		/*
 		 * API used by JS, and possibly others...
 		 */
-		case 'api': 
-			if (count($parameters) < 1) throw new Exception('Missing parameter');			
+		case 'api':
+			if (count($parameters) < 1) throw new Exception('Missing parameter');
 			$action2 = array_shift($parameters);
-			
+
 			switch($action2) {
 
-				case 'user': 
+				case 'user':
 					$api = new API_User($config, $parameters);
 					$api->show();
 					break;
 
-				case 'discojuice': 
+				case 'discojuice':
 					$api = new API_DiscoJuice($config, $parameters);
 					$api->show();
 					break;
 
-				case 'foodlelist': 
+				case 'foodlelist':
 					$api = new API_Foodlelist($config, $parameters);
 					$api->show();
 					break;
 
-				case 'activity': 
+				case 'activity':
 					$api = new API_Activity($config, $parameters);
 					$api->show();
-					break;					
+					break;
 
 
-				case 'e': 
+				case 'e':
 					$api = new API_EventsAnon($config, $parameters);
 					$api->show();
 					break;
 
-				case 'events': 
+				case 'events':
 					$api = new API_Events($config, $parameters);
 					$api->show();
 					break;
 
-						
-				case 'f': 
+
+				case 'f':
 					$api = new API_Foodle($config, $parameters);
 					$api->show();
 					break;
 
-				case 'foodle': 
+				case 'foodle':
 					$api = new API_FoodleAuthenticated($config, $parameters);
 					$api->show();
 					break;
 
-					
-				case 'idplist': 
+
+				case 'idplist':
 					$api = new API_IdPList($config, $parameters);
 					$api->show();
 					break;
-					
+
 				case 'files':
 					$api = new API_Files($config, $parameters);
 					$api->show();
 					break;
 
 				case 'dict':
-					if (count($parameters) !== 0) throw new Exception('No parameters supported');					
-					
+					if (count($parameters) !== 0) throw new Exception('No parameters supported');
+
 					header('Content-Type: application/javascript; charset: utf-8');
 					// header('Cache header');
 
@@ -127,35 +122,29 @@ try {
 					require(dirname(dirname(__FILE__)) . '/dictionaries/foodle.' . $selectedLang. '.js');
 					exit;
 
-
 			}
 			break;
 
 
-
-	
 		case 'widget':
 			$page = new Pages_PageWidget($config, $parameters);
 			$page->show();
 			break;
 
-			
-	
+
 		case 'embed':
 			$embed = new Pages_EmbedFoodle($config, $parameters);
 			$embed->getContent($_REQUEST['output']);
 			break;
-			
-		case 'timezone':
-			
 
+		case 'timezone':
 			$db = new FoodleDBConnector($config);
 			$timezone = new TimeZone($db);
 			$newtimezone = $timezone->getTimezone();
 
 			echo "Timezone is :"; print(var_export($newtimezone, true));
 			break;
-			
+
 		case 'mail':
 			require('mail.php');
 			break;
@@ -174,7 +163,6 @@ try {
 			$page = new Pages_PageProfile($config, $parameters);
 			$page->show();
 			break;
-			
 
 
 		case 'attributes':
@@ -182,7 +170,7 @@ try {
 			$page->show();
 			break;
 
-			
+
 		case 'login':
 			$page = new Pages_Login($config, $parameters);
 			$page->show();
@@ -192,14 +180,13 @@ try {
 			$page = new Pages_PageUser($config, $parameters);
 			$page->show();
 			break;
-			
 
 
 		case 'photo':
 			$page = new Pages_Photo($config, $parameters);
 			$page->show();
 			break;
-			
+
 		case 'stats':
 			$page = new Pages_PageStats($config, $parameters);
 			$page->show();
@@ -210,37 +197,37 @@ try {
 			#Timer::tick('before foodle show');
 			$page->show();
 			break;
-			
-	
+
+
 		case 'foodle':
-		
+
 			if (isset($_REQUEST['output']) && $_REQUEST['output'] == 'rss') {
 				$rss = new Pages_RSSFoodle($config, $parameters);
 				$rss->show();
-				break;				
+				break;
 			} elseif(isset($_REQUEST['output']) && $_REQUEST['output'] == 'csv') {
 				$csv = new Pages_CSVFoodle($config, $parameters);
 				$csv->show();
-				break;								
+				break;
 			}
 			//  elseif(isset($_REQUEST['output']) && $_REQUEST['output'] == 'ical') {
 			// 	$csv = new Pages_CalFoodle($config, $parameters);
 			// 	$csv->show();
-			// 	break;								
+			// 	break;
 			// }
-		
+
 			#Timer::tick('before new foodle page');
 			$page = new Pages_PageFoodle($config, $parameters);
 			#Timer::tick('before foodle show');
 			$page->show();
 			break;
 
-			
+
 		case 'delete':
 			$page = new Pages_PageDelete($config, $parameters);
 			$page->show();
 			break;
-			
+
 		case 'debug':
 			$page = new Pages_Debug($config, $parameters);
 			$page->show();
@@ -250,8 +237,8 @@ try {
 			$page = new Pages_FDebug($config, $parameters);
 			$page->show();
 			break;
-			
-			
+
+
 		case 'support':
 			$page = new Pages_PageSupport($config, $parameters);
 			$page->show();
@@ -282,11 +269,11 @@ try {
 			$page = new Pages_PageDisco($config, $parameters);
 			$page->show();
 			break;
-			
+
 		case 'discoresponse':
 			require_once('discoresponse.html');
 			break;
-			
+
 		case 'extradiscofeed':
 			header('Content-Type: application/javascript; charset: utf-8');
 			$data = file_get_contents('extradiscofeed.js');
@@ -299,7 +286,7 @@ try {
 				header('Content-Type: application/json; charset=utf-8');
 				echo $data;
 			}
-			
+
 			break;
 
 		case 'test':
@@ -307,32 +294,31 @@ try {
 			break;
 
 
-		// Redirecting user if using old 
+		// Redirecting user if using old
 		case 'foodle.php':
 			header('Location: /foodle/' . $_REQUEST['id']);
 			break;
 
-		// Redirecting user if using old 
+		// Redirecting user if using old
 		case 'favicon.ico':
 			header('Content-Type: image/x-icon');
 			include('res/uninett-theme/ico/favicon.ico');
 			break;
 
-		
+
 		// No page found.
 		default:
 			throw new Exception('404: Page not found [' . $action . '].');
-	
+
 	}
 
 
 } catch(Exception $e) {
 
-
 	$isAuth = FALSE;
 
 	try {
-	
+
 		$db = new FoodleDBConnector($config);
 		$auth = new FoodleAuth($db);
 		$auth->requireAuth(TRUE);
@@ -342,11 +328,11 @@ try {
 		$email = $user->email;
 		$userid = $user->userid;
 		$name = $user->username;
-		
+
 		$isAuth = $auth->isAuth();
-		
+
 	} catch (Exception $e) {
-		
+
 	}
 
 	$t = new SimpleSAML_XHTML_Template($config, 'foodleerror.php', 'foodle_foodle');
@@ -354,8 +340,7 @@ try {
 	$t->data['message'] = $e->getMessage() . '<pre>' . $e->getTraceAsString() . '</pre>';
 	$t->data['authenticated'] = $isAuth;
 	$t->data['showsupport'] = TRUE;
-	
-	
-	$t->show();
 
+
+	$t->show();
 }
