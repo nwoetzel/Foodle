@@ -67,7 +67,6 @@ function getAcceptLanguage() {
 	return $ret;
 }
 
-
 /**
  * This function gets the prefered language for the user based on the Accept-Language http header.
  *

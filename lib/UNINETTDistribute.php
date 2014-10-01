@@ -1,27 +1,27 @@
 <?php
 
 class UNINETTDistribute {
-	
+
 	private $foodle;
 	private $template;
-	
+
 	function __construct($foodle, $template) {
 		$this->foodle = $foodle;
 		$this->template = $template;
 	}
-	
+
 	private function getId() {
 		return $this->foodle->identifier;
 	}
-	
+
 	private function getTitle() {
 		return $this->foodle->name;
 	}
-	
+
 	function show() {
-		
+
 		echo(
-			'<h3><a href="#">' . 
+			'<h3><a href="#">' .
 			$this->template->getTranslation(
 			array(
 				'en' => 'Publish to Eureka',
@@ -34,7 +34,7 @@ class UNINETTDistribute {
 			<form action="https://eureka.uninett.no/addfoodle" method="get" >
 				<input type="hidden" name="id" value="' . htmlspecialchars($this->getId()) . '" />
 				<input type="hidden" name="name" value="' . htmlspecialchars($this->getTitle()) . '" />
-				<input type="submit" value="'  . 
+				<input type="submit" value="'  .
 					htmlspecialchars(
 						$this->template->getTranslation(
 						array(
@@ -42,7 +42,7 @@ class UNINETTDistribute {
 							'no' => 'Publiser denne Foodlen',
 						)
 					)
-				) . 
+				) .
 			'" /></form>'
 		);
 
@@ -54,13 +54,6 @@ class UNINETTDistribute {
 			)) . '</p>'
 		);
 		echo '</div>';
-		
-		
 	}
-	
-	
+
 }
-
-
-
-?>

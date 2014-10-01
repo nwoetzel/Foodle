@@ -16,9 +16,9 @@ class Foodle_EMail {
 	private $replyto = NULL;
 	private $subject = NULL;
 	private $headers = array();
-	
+
 	protected $swift;
-	
+
 	/**
 	 * Constructor
 	 */
@@ -27,27 +27,27 @@ class Foodle_EMail {
 		$this->cc = $cc;
 		$this->replyto = $replyto;
 		$this->subject = $subject;
-		
+
 		$config = SimpleSAML_Configuration::getInstance('foodle');
 		$this->from = $config->getValue('fromAddress', 'no-reply@foodl.org');
-		
+
 		require_once(dirname(dirname(__FILE__)) . '/lib-ext/swift/swift_required.php');
 	}
 
 	function setBody($body) {
 		$this->body = $body;
 	}
-	
+
 	public function getHTML($body = NULL) {
 		if (empty($body)) $body = $this->body;
-		
+
 		$body = Data_Foodle::cleanMarkdownInput($body);
-		
+
 		return '<!DOCTYPE html>
 		<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
 		<head xml:lang="en">
 
-			<meta charset="utf-8" />	
+			<meta charset="utf-8" />
 
 		<style type="text/css">
 
@@ -137,9 +137,9 @@ class Foodle_EMail {
 		div#content h1 {
 			margin-top: 0px;
 		}
-		
+
 		hr {
-			height: 0px; color: #ccc; 
+			height: 0px; color: #ccc;
 		}
 
 
@@ -185,12 +185,12 @@ class Foodle_EMail {
 			background: #eee;
 			border-top: 1px solid #ccc;
 			border-bottom: 1px solid #ccc;
-			margin: 3px 0px 0px 0px; 
+			margin: 3px 0px 0px 0px;
 			padding: 0px 0px 0px 0px;
 			z-index: 3;
 		}
 		#headerbar #breadcrumb {
-			float: left; 
+			float: left;
 			margin: 9px 1em;
 
 		}
@@ -205,7 +205,7 @@ class Foodle_EMail {
 			clear: both;
 			border-top: 1px solid #ccc;
 			text-align: center;
-			margin-top: 1em; 
+			margin-top: 1em;
 			padding: 0px 0px 0px 0px;
 			z-index: 1;
 			color: #888;
@@ -217,7 +217,7 @@ class Foodle_EMail {
 		</style>
 
 
-			<title>' . $this->subject . '</title> 
+			<title>' . $this->subject . '</title>
 
 
 
@@ -251,25 +251,25 @@ class Foodle_EMail {
 		</body>
 		</html>';
 	}
-	
+
 	function sendWithAttachment($attach) {
 		if ($this->to == NULL) throw new Exception('EMail field [to] is required and not set.');
 		if ($this->subject == NULL) throw new Exception('EMail field [subject] is required and not set.');
 		if ($this->body == NULL) throw new Exception('EMail field [body] is required and not set.');
-		
+
 		$random_hash = SimpleSAML_Utilities::stringToHex(SimpleSAML_Utilities::generateRandomBytes(16));
-		
+
 		if (isset($this->from))
 			$this->headers[]= 'From: ' . $this->from;
 		if (isset($this->replyto))
 			$this->headers[]= 'Reply-To: ' . $this->replyto;
 
 		$this->headers[] = 'MIME-Version: 1.0';
-		$this->headers[] = 'multipart/mixed; boundary=simplesamlphp-mixed-' . $random_hash . ''; 
+		$this->headers[] = 'multipart/mixed; boundary=simplesamlphp-mixed-' . $random_hash . '';
 
 
 		$message = '--simplesamlphp-mixed-' . $random_hash . '
-Content-Type: text/plain; charset="utf-8" 
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
 ' . self::quoted_printable_encode('Dette er litt tekst. som skal være med i mailen....'). '
@@ -286,18 +286,18 @@ Content-Transfer-Encoding: base64
 --simplesamlphp-mixed-' . $random_hash . '
 ';
 
-		
+
 		$message = 'simplesamlphp-mixed-' . $random_hash . '
 Content-Type: multipart/alternative; boundary="simplesamlphp-alt-' . $random_hash . '"
 
 --simplesamlphp-alt-' . $random_hash . '
-Content-Type: text/plain; charset="utf-8" 
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
 ' . strip_tags(html_entity_decode($this->body)) . '
 
 --simplesamlphp-alt-' . $random_hash . '
-Content-Type: text/html; charset="utf-8" 
+Content-Type: text/html; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
 ' . $this->getHTML($this->body) . '
@@ -305,9 +305,9 @@ Content-Transfer-Encoding: 8bit
 --simplesamlphp-alt-' . $random_hash . '
 
 --simplesamlphp-mixed-' . $random_hash . '
-Content-Type: text/calendar; name="foodle-invitation-' . $random_hash . '.ics"  
-Content-Transfer-Encoding: base64  
-Content-Disposition: attachment 
+Content-Type: text/calendar; name="foodle-invitation-' . $random_hash . '.ics"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment
 
 ' . base64_encode($attach) . '
 
@@ -319,13 +319,13 @@ Content-Disposition: attachment
 		SimpleSAML_Logger::debug('Email: Sending e-mail to [' . $this->to . '] : ' . ($mail_sent ? 'OK' : 'Failed'));
 		if (!$mail_sent) throw new Exception('Error when sending e-mail');
 	}
-	
+
 	function send($attach = NULL) {
 		if ($this->to == NULL) throw new Exception('EMail field [to] is required and not set.');
 		if ($this->subject == NULL) throw new Exception('EMail field [subject] is required and not set.');
 		if ($this->body == NULL) throw new Exception('EMail field [body] is required and not set.');
 
-		
+
 		$message = Swift_Message::newInstance();
 		$message->setSubject($this->subject);
 		error_log('From address is: ' . $this->from);
@@ -333,52 +333,49 @@ Content-Disposition: attachment
 		$message->setTo($this->to);
 		$message->setBody(strip_tags(html_entity_decode($this->body)));
 		$message->addPart( $this->getHTML(), 'text/html');
-		
+
 		if (!empty($attach)) {
 			foreach($attach AS $a) {
 				$na = Swift_Attachment::newInstance($a['data'], $a['file'], $a['type']);
 				$message->attach($na);
 			}
 		}
-		
-		
+
 		//$transport = Swift_MailTransport::newInstance();
 		//Sendmail
 		$transport = Swift_SendmailTransport::newInstance('/usr/sbin/sendmail -bs');
-		
+
 		$mailer = Swift_Mailer::newInstance($transport);
 		$mailer->send($message);
-		
 	}
-
 
 	function sendOld() {
 		if ($this->to == NULL) throw new Exception('EMail field [to] is required and not set.');
 		if ($this->subject == NULL) throw new Exception('EMail field [subject] is required and not set.');
 		if ($this->body == NULL) throw new Exception('EMail field [body] is required and not set.');
-		
+
 		$random_hash = SimpleSAML_Utilities::stringToHex(SimpleSAML_Utilities::generateRandomBytes(16));
-		
+
 		if (isset($this->from))
 			$this->headers[]= 'From: ' . $this->from;
 		if (isset($this->replyto))
 			$this->headers[]= 'Reply-To: ' . $this->replyto;
 
-		$this->headers[] = 'Content-Type: multipart/alternative; boundary="simplesamlphp-' . $random_hash . '"'; 
-		
+		$this->headers[] = 'Content-Type: multipart/alternative; boundary="simplesamlphp-' . $random_hash . '"';
+
 		$message = '
 
 This is a message with multiple parts in MIME format.
 
 --simplesamlphp-' . $random_hash . '
 Content-Disposition: inline
-Content-Type: text/plain; charset="utf-8" 
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
 ' . strip_tags(html_entity_decode($this->body)) . '
 
 --simplesamlphp-' . $random_hash . '
-Content-Type: text/html; charset="utf-8" 
+Content-Type: text/html; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
 ' . $this->getHTML($this->body) . '

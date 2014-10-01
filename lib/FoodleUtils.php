@@ -1,43 +1,42 @@
 <?php
 
 class FoodleUtils {
-	
-	
+
 	public static function getURL() {
 		$config = SimpleSAML_Configuration::getInstance('foodle');
 		$url = $config->getString('url', SimpleSAML_Utilities::selfURLhost());
 		return $url . '/' . $config->getValue('baseurlpath', '');
 	}
-	
+
 	public static function cleanUsername($username) {
 		$username = preg_replace('/[\'"]/', '', $username);
 		return $username;
 	}
-	
+
 	public static function checkboxChecked($state) {
 		if ($state) return ' checked="checked" ';
 		return '';
 	}
-	
+
 	public static function checkbox($name) {
 		if (!empty($_REQUEST[$name]) && $_REQUEST[$name] == 'enabled') return TRUE;
 		return FALSE;
 	}
-	
+
 	// The parameters of this function are the dates to be compared.
 	// The first should be prior to the second. The dates are in
 	// the form of: 1978-04-26 02:00:00.
 	// They also can come from a web form using the global $_POST['start']
 	// and $_POST['end'] variables.
 	public static function date_diff($secondsago) {
-		
+
 #		echo 'comparing ' . $secondsago;
 #		return $secondsago . ' seconds';
 
 		if (is_null($secondsago)) return 'NA';
 
 		$nseconds = abs($secondsago); // Number of seconds between the two dates
-		
+
 		$ndays = round($nseconds / 86400); // One day has 86400 seconds
 		$nseconds = $nseconds % 86400; // The remainder from the operation
 		$nhours = round($nseconds / 3600); // One hour has 3600 seconds
@@ -45,15 +44,15 @@ class FoodleUtils {
 		$nminutes = round($nseconds / 60); // One minute has 60 seconds, duh!
 		$nseconds = $nseconds % 60;
 
-		if ($ndays > 0) 
+		if ($ndays > 0)
 			return $ndays . " days";
-		elseif ($nhours > 0) 
+		elseif ($nhours > 0)
 			return $nhours . "h " . $nminutes . "m";
-		elseif ($nminutes > 0) 
+		elseif ($nminutes > 0)
 			return $nminutes . " min";
-		else 
+		else
 			return $nseconds . " sec";
-	} 
+	}
 
 	/*
 	 * Parses the deprecated foodle columne format, that looks like this:
@@ -65,7 +64,7 @@ class FoodleUtils {
 		foreach($level1 AS $head) {
 			if (preg_match('/(.*)\((.*)\)/', $head, $matches)) {
 				$children = array();
-				foreach(explode(',', $matches[2]) AS $child) 
+				foreach(explode(',', $matches[2]) AS $child)
 					$children[] = array('title' => strip_tags($child));
 				$entry = array('title' => strip_tags($matches[1]), 'children' => $children);
 			} else {
@@ -76,8 +75,7 @@ class FoodleUtils {
 		return $result;
 	}
 
-
-	public static function getInvitationToken($groupid) {		
+	public static function getInvitationToken($groupid) {
 		$config = SimpleSAML_Configuration::getInstance('foodle');
 		$tlt = new SimpleSAML_Auth_TimeLimitedToken(604800, $config->getString('secret'));
 		$tlt->addVerificationData('group:' . $groupid);
@@ -91,6 +89,4 @@ class FoodleUtils {
 		return $tlt->validate_token($token);
 	}
 
-	
 }
-

@@ -106,6 +106,5 @@ class RSS {
         $res.="</rss>\n";
         return $res;
     }
-}
 
-?>
+}
