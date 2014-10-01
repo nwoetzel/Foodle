@@ -1,25 +1,15 @@
-<?php 
-	$this->includeAtTemplateBase('includes/header.php'); 
-
-$user = $this->data['user'];
-
-
-
+<?php
+    $this->includeAtTemplateBase('includes/header.php');
+    $user = $this->data['user'];
 ?>
-
 
 <div class="container">
 	<div class="row uninett-color-white">
-		<div class="col-md-8  uninett-padded"> 
-
-
+		<div class="col-md-8  uninett-padded">
 		<h1 style="margin-bottom: 0px"><?php echo htmlspecialchars($this->t('bc_attribute_check')); ?></h1>
-
 <?php
 
 echo '<p style="color: #999; margin-top: 2px; margin-bottom: 35px"><tt>' . htmlspecialchars($user->userid) . '</tt></p>';
-
-
 
 echo '<dl>';
 
@@ -31,11 +21,8 @@ if (!empty($user->orgunit)) {
 
 echo ' </dd>';
 
-
-
 echo ' <dt>Email</dt>';
 echo ' <dd>' . htmlspecialchars($user->email) . '</dd>';
-
 
 echo ' <dt>Location</dt>';
 echo ' <dd>' . htmlspecialchars($user->location) . '</dd>';
@@ -45,13 +32,9 @@ echo ' <dt>Timezone</dt>';
 $current = $this->data['timezone']->getTimeZone();
 echo( '<dd>' . $current . '</dd>');
 
-
-
 echo '</dl>';
 
-
 echo '<h2>' . $this->t('attribute_validation') . '</h2>';
-
 
 if (!empty($this->data['validate'])) {
 foreach($this->data['validate'] AS $v) {
@@ -88,7 +71,7 @@ if (empty($this->data['attributes'])) {
 
 	echo '<dl class="attributelist">';
 	foreach($this->data['attributes'] AS $key => $values) {
-		
+
 		echo '<dt><tt>' .  htmlspecialchars($key) . '</tt></dt>';
 		echo '<dd><ul>';
 		foreach($values AS $value) {
@@ -100,40 +83,23 @@ if (empty($this->data['attributes'])) {
 
 		}
 		echo '</ul></dd>';
-		
-		
 	}
 	echo '</dl>';
 }
 ?>
-
 	</div>
 	<div class="col-md-4">
-			
 <?php
-
-
 	if (!empty($user->photol)) {
 		$photourl = $user->getPhotoURL('l');
 		if (!empty($photourl) ) {
 			echo '<img style="max-width: 250px; border: 1px solid #888; margin: 2em 1em" src="' . htmlspecialchars($photourl) . '" />';
 		}
-		
+
 	}
-
-
-
 ?>
 
-
-
-			
 	</div>
-
 </div>
 
-
-
-
-			
 <?php $this->includeAtTemplateBase('includes/footer.php'); ?>

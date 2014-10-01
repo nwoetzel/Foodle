@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $this->data['head'] = '
 
@@ -14,39 +14,24 @@ $this->data['head'] = '
 	</script>
 ';
 
-$this->includeAtTemplateBase('includes/header.php'); 
+$this->includeAtTemplateBase('includes/header.php');
 
-
-
-echo '<h1>' .  $this->data['name'] . '</h1>'; 
+echo '<h1>' .  $this->data['name'] . '</h1>';
 
 echo('<form method="post" action="/fixdate/' . $this->data['foodle']->identifier . '">');
-
-
-
 ?>
 
-
 <p><?php echo $this->t('fixdate_descr'); ?></p>
-
-<p><?php echo $this->t('description'); ?>: <br />
+<p><?php echo $this->t('description'); ?>: <br/>
 
 <textarea id="foodledescr" style="width: 95%; height: 160px" name="descr" rows="80" cols="5"><?php
 if (isset($this->data['descr'])) echo $this->data['descr'];
 ?></textarea><br />
-<?php 
-	echo $this->t('markdowninfo', 
+<?php
+	echo $this->t('markdowninfo',
 			array('%Markdown%' => '<a href="http://daringfireball.net/projects/markdown/syntax">Markdown</a>')
-		) . ' ' . $this->t('htmlinfo'); 
+		) . ' ' . $this->t('htmlinfo');
 ?></p>
-
-
-
-
-
-
-
-
 
 <?php
 
@@ -88,21 +73,20 @@ if (!empty($this->data['foodle'])) {
 	<label for="eventtimeopt">Associate the Foodle with a specific date and time</label></p>
 
 	<div id="eventdatetimecontent" style="margin 0px; padding: 0px; display: none">
-		
-	<?php 
-	
+
+	<?php
+
 		echo('<p>Timezone: ');
-		
+
 		if (isset($this->data['ftimezone'])) {
 			echo($this->data['timezone']->getHTMLList($this->data['ftimezone']) . '');
 		} else {
 			echo($this->data['timezone']->getHTMLList() . '');
 		}
 		echo('</p>');
-		
+
 	?>
-	
-		
+
 	<p>
 		<?php
 			echo '<input type="input" id="eventdatefrom" name="eventdatefrom" value="' . $datefrom . '" />';
@@ -112,20 +96,18 @@ if (!empty($this->data['foodle'])) {
 			echo '<input type="input" id="eventdateto" name="eventdateto" value="' . $dateto . '" />';
 		?>
 	</p>
-	
+
 	<p>
 		<?php
 			echo '<input type="checkbox" id="eventallday" name="eventallday" value="enabled" ' . $checkbox_eventallday . '/>';
 			echo '<label style="margin-right: 2em" for="eventallday">All day</label>';
-			
+
 			echo '<input type="checkbox" id="eventmultipledays" name="eventmultipledays" value="enabled" ' .  $checkbox_eventmultipledays . '/>';
-			echo '<label for="eventmultipledays">Multiple days</label>';					
+			echo '<label for="eventmultipledays">Multiple days</label>';
 		?>
 	</p>
 	</div>
-
 </div>
-
 
 <?php
 
@@ -137,7 +119,7 @@ echo('<p>
 
 echo('<div>');
 // Show list of already invited users..
-$responses = $this->data['foodle']->getResponses();	
+$responses = $this->data['foodle']->getResponses();
 foreach($responses AS $response) {
 #	echo '<div>' . $response->userid . '</div>';
 #	if (!$response->invitation) continue;
@@ -151,18 +133,11 @@ echo ('</div>');
 
 ?>
 
-			
 <div class="ready">
 <?php
 	echo('<input id="savefix" type="submit" name="save" value="' . $this->t('save_fixdate') . '" />');
 ?>
 </div>
-
-
-
-
 </form>
-	
 
-			
 <?php $this->includeAtTemplateBase('includes/footer.php'); ?>

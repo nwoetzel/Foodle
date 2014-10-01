@@ -1,12 +1,10 @@
-<?php 
-	$this->includeAtTemplateBase('includes/header.php'); 
-
+<?php
+	$this->includeAtTemplateBase('includes/header.php');
 ?>
-
 
 <div class="container gutter">
 	<div class="row">
-		<div class="col-lg-12"> 
+		<div class="col-lg-12">
 			<div class="jumbotron uninett-color-orange">
 				<h1>Error</h1>
 				<p><?php echo $this->data['message']; ?></p>
@@ -17,7 +15,4 @@
 	</div>
 </div>
 
-	
-
-		
 <?php $this->includeAtTemplateBase('includes/footer.php'); ?>

@@ -1,5 +1,3 @@
-
-
 <?php
 $languages = $this->getLanguageList();
 $langnames = array(
@@ -16,7 +14,7 @@ $langnames = array(
 			'fr' => 'Français',
 			'it' => 'Italiano',
 			'nl' => 'Nederlands',
-			'lb' => 'Luxembourgish', 
+			'lb' => 'Luxembourgish',
 			'cs' => 'Czech',
 			'sl' => 'Slovenščina', // Slovensk
 			'lt' => 'Lietuvių kalba', // Lithuanian
@@ -37,15 +35,13 @@ $langnames = array(
 			'he' => 'עִבְרִית', // Hebrew
 );
 
-
-
 if (empty($_POST) ) {
 
 	foreach ($languages AS $lang => $current) {
 		if ($current) {
-			echo '<li class="pull-right dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">' . 
+			echo '<li class="pull-right dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">' .
 			'<span class="glyphicon glyphicon-flag"></span> ' . $langnames[$lang] . ' <b class="caret"></b></a>';
-		} 
+		}
 	}
 
 	echo '<ul class="dropdown-menu">';
@@ -67,7 +63,4 @@ if (empty($_POST) ) {
 	}
 	echo '</ul>';
 
-	
-
 }
-

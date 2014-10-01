@@ -1,8 +1,8 @@
-<?php 
+<?php
 
-// $headbar = '<a class="button" style="float: right; " 
+// $headbar = '<a class="button" style="float: right; "
 // 		title="Comma separated file, works with Excel." href="/foodle/' . $this->data['foodle']->identifier . '?output=csv">
-// 	<span><!-- <img src="resources/spreadsheet.png" /> -->' . 
+// 	<span><!-- <img src="resources/spreadsheet.png" /> -->' .
 // 		$this->t('open_in_spreadsheet') . '</span></a>';
 
 
@@ -22,53 +22,20 @@
 // 			Foodle_Invitation_View("' . htmlspecialchars($this->data['foodle']->identifier) . '");
 // 		});
 // 	</script>
-	
+
 // 	';
 // }
 
-$this->includeAtTemplateBase('includes/header.php'); 
+$this->includeAtTemplateBase('includes/header.php');
 ?>
-
-
-
 
 <div class="container gutter">
 	<div class="row">
-		<div class="col-lg-12 uninett-color-white uninett-padded"> 
-
+		<div class="col-lg-12 uninett-color-white uninett-padded">
 			<div id="foodleResponse"  data-foodleid="<?php echo htmlentities($this->data['foodleid']); ?>"></div>
-
-
 			<p style="color: #400"><span class="glyphicon glyphicon-warning-sign"></span> Experiencing problems with the new Foodle? – <a href="mailto:andreas.solberg@uninett.no">Contact us</a> to help us resolve migration issues.</p>
-
-
 		</div>
 	</div>
 </div>
 
-			
-<?php $this->includeAtTemplateBase('includes/footer.php'); 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<?php $this->includeAtTemplateBase('includes/footer.php');

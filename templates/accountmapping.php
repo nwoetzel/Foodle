@@ -1,19 +1,15 @@
-<?php 
-	$this->includeAtTemplateBase('includes/header.php'); 
-
+<?php
+	$this->includeAtTemplateBase('includes/header.php');
 ?>
 
 <script>
-
 	function setUserid(el, user, where) {
 		$("#" + where).attr('value', user);
 		$(el).attr('disabled', 'disabled');
 	}
-
 </script>
 
 <div id="content">
-
 	<h2>Account Mapping</h2>
 
 <form action="/accountmapping" method="post">
@@ -24,7 +20,6 @@
 
 </form>
 
-
 <style>
 div.shaddow {
 	background: #ccc;
@@ -34,7 +29,7 @@ div.shaddow {
 <?php
 
 function getStats($stats) {
-	
+
 	$map = array(
 		'owner' => 'Created Foodles',
 		'discussion' => 'Discussion entries',
@@ -44,34 +39,33 @@ function getStats($stats) {
 		'createdago' => 'Created',
 		'updatedago' => 'Updated',
 	);
-	
+
 	$html = '<table >';
 	foreach($stats AS $key => $value) {
 		switch ($key) {
-			
+
 			case 'createdago':
 			case 'updatedago':
-			
-				//$value = FoodleUtils::date_diff(($value/1000)); 
+
+				//$value = FoodleUtils::date_diff(($value/1000));
 			break;
 		}
-		
+
 		$html .= '<tr> <td style="text-align: right; width: 200px">' . $map[$key] . '</td> <td style="text-align: right; width: 150px">' . $value . '</td>  </tr>';
 	}
 	$html .= '</table>';
 	return $html;
 }
 
-
 function presentUser($user) {
 
 	echo '<div class="' . (empty($user['shaddow']) ? 'clean' : 'shaddow') . '" style="border: 1px solid #eee; margin: 1em; padding: .5em">';
-	echo '<input style="float: right" type="submit" onclick="setUserid(this, \'' . $user['userid'] . '\', \'useridTo\')" value="Map to this" />';	
+	echo '<input style="float: right" type="submit" onclick="setUserid(this, \'' . $user['userid'] . '\', \'useridTo\')" value="Map to this" />';
 	echo '<input style="float: right" type="submit" onclick="setUserid(this, \'' . $user['userid'] . '\', \'useridFrom\')" value="Map from this" />';
 
 	echo '<h3 style="color: green">' . $user['username'] . '</h3>';
 	echo '<dl>
-	
+
 		<dt>UserID</dt>
 			<dd><tt>' . $user['userid'] . '</tt></dd>
 
@@ -92,18 +86,13 @@ function presentUser($user) {
 
 		<dt>shaddow</dt>
 			<dd>' . $user['shaddow'] . '</dd>
-			
+
 		<dt>Stats</dt>
 			<dd>' . getStats($user['stats']) . '</dd>
-			
+
 		</dl>';
 	echo '</div>';
-	
-	
 }
-
-
-
 
 // echo '<pre>';
 // print_r($this->data['hits']);
@@ -124,11 +113,7 @@ foreach($this->data['hitsname'] AS $h) {
 	}
 }
 
-
-
-
-
 ?>
 </div>
-		
+
 <?php $this->includeAtTemplateBase('includes/footer.php'); ?>

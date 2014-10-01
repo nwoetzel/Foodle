@@ -9,8 +9,6 @@
 	<link rel="shortcut icon" href="/res/uninett-theme/ico/favicon.ico">
 
 	<title>Foodle</title>
-
-
 	<style>
 
 	body {
@@ -18,10 +16,8 @@
 		background-color: #fff;
 	}
 	</style>
-	
 
 	<?php
-
 		echo '<script type="text/javascript">';
 
 		if (!empty($this->data['foodle'])) {
@@ -31,27 +27,19 @@
 		}
 		echo '</script>';
 
-
 		if (!empty($this->data['gmapsAPI'])) {
 			echo '<script type="text/javascript" ' .
 			 'src="https://maps.googleapis.com/maps/api/js?key=' . $this->data['gmapsAPI'] . '&amp;sensor=false"></script>';
 		}
-
-
 	?>
-	
 
-	
-<?php 
-
-
+<?php
 	echo '<script type="text/javascript" data-main="main" src="/res/js2/lib/require.js"></script>';
 
 	if ($this->data['optimize']) {
 		echo '<!-- Running optimized javascript -->';
 
 		echo '<link rel="stylesheet" media="screen" type="text/css" href="/res/css/foodle.build.css" />';
-		
 	} else {
 		echo '<!-- Running javascript that is not optimized. This is better for debugging. -->';
 		echo '<script type="text/javascript">';
@@ -60,15 +48,6 @@
 		echo '<link rel="stylesheet" media="screen" type="text/css" href="/res/css/foodle.css" />';
 
 	}
-
-
 ?>
-
-
 </head>
-
-
-
 <body>
-
-

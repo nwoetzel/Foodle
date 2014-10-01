@@ -60,7 +60,6 @@ $discojuiceconfig = '
 			};
 
 	<?php
-
 		echo "
 			djc.metadata.push('" . FoodleUtils::getUrl(). "/extradiscofeed');
 			djc.disco.subIDwritableStores = {};
@@ -69,7 +68,6 @@ $discojuiceconfig = '
 
 
 		";
-
 	?>
 
 			djc.callback = IdPDiscovery.setup(djc, acl);
@@ -77,9 +75,7 @@ $discojuiceconfig = '
 			$(document).ready(function() {
 				$("a.signin").DiscoJuice(djc);
 			});
-
 		</script>
-
 </head>
 <body style="background: #ccc">
     <p style="display: none" style="text-align: right"><a class="signin" href="/">signin</a></p>
@@ -93,6 +89,5 @@ $discojuiceconfig = '
 			<p>Replace the idp with the entityid of your idp if you are not using Feide to login</p>.
 		</div>
 	</noscript>
-
 </body>
 </html>
