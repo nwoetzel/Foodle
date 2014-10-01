@@ -2,18 +2,18 @@
 
 abstract class API_API {
 
-	protected $config;	
+	protected $config;
 	protected $parameters;
-	
+
 	protected $fdb;
 
 	function __construct($config, $parameters) {
 		$this->config = $config;
 		$this->parameters = $parameters;
-		
+
 		$this->fdb = new FoodleDBConnector($this->config);
 	}
-	
+
 	protected function prepare() {
 		throw new Exception('API not implemented');
 	}
@@ -26,7 +26,7 @@ abstract class API_API {
 		if ($inputraw) {
 			$object = json_decode($inputraw, true);
 		}
-		
+
 
 		$path = $_SERVER['PATH_INFO'];
 		$realmethod = strtolower($_SERVER['REQUEST_METHOD']);
@@ -45,20 +45,19 @@ abstract class API_API {
 	}
 
 
-
 	public function show() {
-	
+
 		$returnobj = array('status' => 'ok');
 
-	
+
 		header('Content-type: application/json; charset=utf-8');
-	
+
 		try {
 
-			$returnobj = $this->prepare();			
+			$returnobj = $this->prepare();
 
 		} catch(Exception $e) {
-			
+
 			header('Content-type: text-plain; charset=utf-8');
 			print_r($e);
 
@@ -69,20 +68,20 @@ abstract class API_API {
 
 		if(!empty($_REQUEST['debug'])) {
 			header('Content-type: text/plain; charset=utf-8');
-			print_r($returnobj); 
+			print_r($returnobj);
 			exit;
 		}
 
-		
-	
-		
+
+
+
 		// echo json_encode($returnobj, JSON_PRETTY_PRINT);
 		// echo self::json_format($returnobj);
 		echo json_encode($returnobj);
 		exit;
 	}
-	
-	
+
+
 	/**
 	 * Format an associative array as a json string.
 	 *
@@ -92,30 +91,29 @@ abstract class API_API {
 	 */
 	public static function json_format($data, $indentation = '') {
 		assert('is_string($indentation)');
-	
+
 		if (!is_array($data)) {
 			return json_encode($data);
 		}
-	
+
 		$ret = "{";
 		$first = TRUE;
 		foreach ($data as $k => $v) {
 			$k = json_encode((string)$k);
 			$v = self::json_format($v, $indentation . "\t");
-	
+
 			if ($first) {
 				$ret .= "\n";
 				$first = FALSE;
 			} else {
 				$ret .= ",\n";
 			}
-	
+
 			$ret .= $indentation . "\t" . $k . ': ' . $v;
 		}
 		$ret .= "\n" . $indentation . '}';
-	
+
 		return $ret;
 	}
-
 
 }

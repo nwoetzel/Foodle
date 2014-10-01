@@ -8,12 +8,11 @@ class API_Foodle extends API_API {
 
 	function __construct($config, $parameters) {
 		parent::__construct($config, $parameters);
-		
-		
+
+
 	}
-	
+
 	function prepare() {
-	
 
 		$parameters = null;
 		$object = null;
@@ -31,7 +30,7 @@ class API_Foodle extends API_API {
 			if (self::route('get', '^/api/f/([^/]+)$', $parameters, $object)) {
 
 				return $this->foodle->getView();
-			
+
 			} else if (self::route('get', '^/api/f/([^/]+)/responders$', $parameters, $object)) {
 
 				$this->responses = $this->fdb->readResponses($this->foodle, NULL, FALSE);
@@ -54,12 +53,7 @@ class API_Foodle extends API_API {
 
 		}
 
-
-
 		throw new Exception('Invalid request parameters');
 	}
 
-
-	
 }
-

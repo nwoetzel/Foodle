@@ -8,14 +8,12 @@ class API_FoodleAuthenticated extends API_Authenticated {
 
 	function __construct($config, $parameters) {
 		parent::__construct($config, $parameters);
-		
-		
+
 	}
-	
+
 	function prepare() {
 
 		self::optionalAuth();
-
 
 
 		// All requests point at a specific Foodle
@@ -89,14 +87,9 @@ class API_FoodleAuthenticated extends API_Authenticated {
 				// $this->fdb->saveFoodleResponse($currentResponse);
 				// return true;
 
-
-
-
 			} else if (self::route('post', '^/api/foodle/([^\/]+)/myresponse$', $parameters, $object)) {
 
-
 				// echo 'about to update response. User is'; print_r($this->user); exit;
-
 
 				$currentResponse = $this->foodle->getMyResponse($this->user);
 				if (isset($object['response']) && isset($object['response']['data'])) {
@@ -117,41 +110,28 @@ class API_FoodleAuthenticated extends API_Authenticated {
 				throw new Exception('Invalid request');
 			}
 
-
-
-
-			
 		} else if (self::route('post', '^/api/foodle$', $parameters, $object)) {
 
 			// header('Content-type: text/plain; charset=utf-8');
-			// print_r($object); 
+			// print_r($object);
 
 
 			$newFoodle = new Data_Foodle($this->fdb);
 			$newFoodle->updateFromPostAPI($this->user, $object);
-			
+
 			$this->fdb->saveFoodle($newFoodle);
 			$this->foodle = $this->fdb->readFoodle($newFoodle->identifier);
 
-			// print_r($newFoodle); 
+			// print_r($newFoodle);
 			// exit;
 
 			return $this->foodle;
 
 		// if ($subrequest === 'discussion') {
-			
 
-			
 		}
-
-
-
-
 
 		throw new Exception('Invalid request parameters');
 	}
 
-
-	
 }
-

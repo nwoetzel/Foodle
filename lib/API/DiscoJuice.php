@@ -2,22 +2,18 @@
 
 class API_DiscoJuice extends API_API {
 
-
-
 	function __construct($config, $parameters) {
 		parent::__construct($config, $parameters);
-		
-		
+
+
 	}
-	
+
 	function prepare() {
 
 		$config = SimpleSAML_Configuration::getInstance('foodle');
 		$entityid = $this->config->getValue('entityid');
 		$feeds = $this->config->getArrayize('feeds', array('edugain'));
 		$responseurl = FoodleUtils::getUrl() . 'discoresponse';
-
-
 
 		$data = array(
 			'title' => 'Foodle',
@@ -37,24 +33,17 @@ class API_DiscoJuice extends API_API {
 			'baseURL' => FoodleUtils::getUrl(),
 		);
 
-
 		// $discojuiceconfig = '
 		// 	"Foodle",
 		// 	"' . $entityid . '",
-		// 	"' . $responseurl . '", 
+		// 	"' . $responseurl . '",
 		// 	' . json_encode($feeds) . ',
 		// 	"http://foodl.org/?idp="
 		// ';
 
-
 		return $data;
-
-
 
 		throw new Exception('Invalid request parameters');
 	}
 
-
-	
 }
-

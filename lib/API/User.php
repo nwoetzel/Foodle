@@ -2,15 +2,12 @@
 
 class API_User extends API_Authenticated {
 
-
 	function __construct($config, $parameters) {
 		parent::__construct($config, $parameters);
-		
-		
-	}
-	
-	function prepare() {
 
+	}
+
+	function prepare() {
 
 		$parameters = null;
 		$object = null;
@@ -22,7 +19,6 @@ class API_User extends API_Authenticated {
 			$name = filter_var($object['name'], FILTER_SANITIZE_SPECIAL_CHARS);
 			$email = filter_var($object['email'], FILTER_SANITIZE_EMAIL);
 
-			
 			$this->user = $this->auth->registerUser($name, $email);
 
 			$res = array(); // 'authenticated' => true);
@@ -31,14 +27,11 @@ class API_User extends API_Authenticated {
 			$res['token'] = $this->user->getToken();
 
 			return $res;
-
 		}
-
 
 		if ($this->user === null) {
 			return array('authenticated' => false);
 		}
-
 
 		// All requests point at a specific Foodle
 		if (self::route('post', '^/api/user/timezone', $parameters, $object)) {
@@ -50,8 +43,6 @@ class API_User extends API_Authenticated {
 			return true;
 
 		}
-
-
 
 		$res = array('authenticated' => true);
 		$res['authenticated'] = $this->user->loadedFromDB;
@@ -66,7 +57,4 @@ class API_User extends API_Authenticated {
 		throw new Exception('Invalid request parameters');
 	}
 
-
-	
 }
-
