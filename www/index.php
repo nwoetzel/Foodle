@@ -293,7 +293,6 @@ try {
 			require_once('test-calendar.php');
 			break;
 
-
 		// Redirecting user if using old
 		case 'foodle.php':
 			header('Location: /foodle/' . $_REQUEST['id']);
@@ -305,13 +304,10 @@ try {
 			include('res/uninett-theme/ico/favicon.ico');
 			break;
 
-
 		// No page found.
 		default:
 			throw new Exception('404: Page not found [' . $action . '].');
-
 	}
-
 
 } catch(Exception $e) {
 
@@ -340,7 +336,6 @@ try {
 	$t->data['message'] = $e->getMessage() . '<pre>' . $e->getTraceAsString() . '</pre>';
 	$t->data['authenticated'] = $isAuth;
 	$t->data['showsupport'] = TRUE;
-
 
 	$t->show();
 }
