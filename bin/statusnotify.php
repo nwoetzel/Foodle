@@ -1,34 +1,32 @@
 #!/usr/bin/env php
 <?php
 
-$SIMPLESAMLPHP_DIR = '/var/simplesamlphp-foodle';
-
 /* This is the base directory of the simpleSAMLphp installation. */
 $baseDir = dirname(dirname(__FILE__));
 require_once($baseDir . '/www/_include.php');
 
 /* Add library autoloader. */
-require_once($SIMPLESAMLPHP_DIR . '/lib/_autoload.php');
+require_once($SIMPLESAMLPATH . '/lib/_autoload.php');
 
 
 
-class SNM {	
+class SNM {
 	private $user, $updates;
 	public function __construct(Data_User $user) {
 		$this->user = $user;
 	}
-	
+
 	public function addFoodle(Data_Foodle $foodle, $updates) {
 		$this->updates[$foodle->identifier] = array('foodle' => $foodle, 'updates' => $updates);
 	}
-	
+
 	public function execute() {
-		
+
 		$text = '
 Below follows the latest updates on Foodles you have created.
 
 		';
-		
+
 		foreach($this->updates AS $foodleid => $res) {
 			$url = FoodleUtils::getUrl() . 'foodle/' . $res['foodle']->identifier;
 			$text .= '
@@ -54,9 +52,9 @@ Below follows the latest updates on Foodles you have created.
 				}
 				$text .= "\n";
 			}
-			
+
 			$text .= "\n[Go to this foodle to view all responses](" . htmlspecialchars($url) . ")\n\n";
-			
+
 		}
 
 		$profileurl = FoodleUtils::getUrl() . 'profile';
@@ -64,11 +62,11 @@ Below follows the latest updates on Foodles you have created.
 
 ## Setup your e-mail notification preferences
 
-You can turn of this e-mail notification, and configure other notification messages <a href="' . 
+You can turn of this e-mail notification, and configure other notification messages <a href="' .
 			htmlspecialchars($profileurl) . '">from your Foodle preference page</a>:
 
 	' . htmlspecialchars($profileurl);
-	
+
 
 		$to = $this->user->email;
 		// $to = 'andreassolberg@gmail.com';
@@ -76,7 +74,7 @@ You can turn of this e-mail notification, and configure other notification messa
 		$mailer->setBody($text);
 		$mailer->send();
 
-	
+
 	}
 
 }
@@ -107,8 +105,8 @@ $c = 0;
 foreach($users AS $userid => $foodles) {
 	$c++;
 	echo "\nProcessing user " . $c . "/" . $no . "  "  . $userid . "\n";
-	
-	
+
+
 	$user = $db->readUser($userid);
 	if ($user === false) {
 		echo 'Skipping user [' . $userid . '] beacuse user account is not yet created.'. "\n";
@@ -116,23 +114,23 @@ foreach($users AS $userid => $foodles) {
 	}
 	if (!$user->notification('otherstatus', TRUE)) {
 		echo 'Skipping user [' . $userid . '] beacuse has turned off this kind of notification..'. "\n";
-		continue;		
+		continue;
 	}
 	if (!$user->notification('otherstatus', TRUE)) {
 		echo 'Skipping user [' . $userid . '] beacuse user has no valid email address'. "\n";
-		continue;		
+		continue;
 	}
 
-	$snm = new SNM($user);	
+	$snm = new SNM($user);
 
 	foreach($foodles AS $foodle) {
 		echo "Processing " . $foodle->identifier . "\n";
 		$updates = $db->getChangesFoodle($foodle);
 		$snm->addFoodle($foodle, $updates);
 	}
-	
+
 	$snm->execute();
-	
+
 // 	$cal = new Calendar($url, FALSE);
 }
 
