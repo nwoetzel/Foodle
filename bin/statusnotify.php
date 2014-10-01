@@ -8,8 +8,6 @@ require_once($baseDir . '/www/_include.php');
 /* Add library autoloader. */
 require_once($SIMPLESAMLPATH . '/lib/_autoload.php');
 
-
-
 class SNM {
 	private $user, $updates;
 	public function __construct(Data_User $user) {
@@ -73,13 +71,8 @@ You can turn of this e-mail notification, and configure other notification messa
 		$mailer = new Foodle_EMail($to, 'Daily Foodle status update', 'Foodl.org <no-reply@foodl.org>');
 		$mailer->setBody($text);
 		$mailer->send();
-
-
 	}
-
 }
-
-
 
 // if (count($argv) < 1) {
 // 	echo "Wrong number of parameters. Run:   " . $argv[0] . " [install,show] url [branch]\n"; exit;
@@ -91,7 +84,6 @@ You can turn of this e-mail notification, and configure other notification messa
 $session = SimpleSAML_Session::getInstance();
 $sspconfig = SimpleSAML_Configuration::getConfig('config.php');
 $config = SimpleSAML_Configuration::getInstance('foodle');
-
 
 $db = new FoodleDBConnector($config);
 echo 'Foodle status notifier' . "\n";
@@ -135,6 +127,3 @@ foreach($users AS $userid => $foodles) {
 }
 
 echo "Completed calendar caching in " . (time() - $start) . " seconds.\n\n";
-
-
-

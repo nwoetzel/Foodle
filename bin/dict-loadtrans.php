@@ -1,8 +1,5 @@
 #!/usr/bin/php
 <?php
-
-
-
 function getData($path) {
 	$opts = array(
 	    'http' => array(
@@ -34,7 +31,6 @@ function getTranslation($project, $resource, $lang) {
 	// return $LANG;
 }
 
-
 function fill_en($en, &$dict) {
 
 	foreach($en AS $k => $v) {
@@ -58,7 +54,7 @@ foreach($info['available_languages'] AS $lang) {
 	echo 'Processing Language ' . $lang['name'] . "\n";
 	$trans = getTranslation('foodle', 'foodle', $lang['code']);
 	$transinfo = getTranslationInfo('foodle', 'foodle', $lang['code']);
-	
+
 	if ($transinfo['untranslated_entities'] > $transinfo['translated_entities']) {
 		echo "Skipping language export, because too few translated terms.\n";
 		continue;
@@ -72,11 +68,7 @@ foreach($info['available_languages'] AS $lang) {
 	file_put_contents($filename, $filecontent);
 	echo "Wrote to " . $filename . "\n"	;
 	$langcodes[] = $lang['code'];
-	
+
 }
 
-
-
 file_put_contents($base . 'languages.json', json_encode($langcodes) );
-
-

@@ -16,7 +16,7 @@
     <link rel="stylesheet" type="text/css" href="https://static.discojuice.org/css/discojuice.css" />
 
     <link rel="stylesheet" media="screen" type="text/css" href="/res/css/foodle2.css" />
-	
+
 
     <style type="text/css">
         body {
@@ -42,18 +42,12 @@ $responseurl = FoodleUtils::getUrl() . 'discoresponse';
 $discojuiceconfig = '
 	"Foodle",
     "' . $entityid . '",
-    "' . $responseurl . '", 
+    "' . $responseurl . '",
 	' . json_encode($feeds) . ',
 	"http://foodl.org/?idp="
 ';
 
-
 ?>
-
-
-
-
-
 		<script type="text/javascript">
             var acl = ['foodl.org', 'beta.foodl.org', 'beta2.foodl.org', 'deploy.foodl.org'];
 			var djc = DiscoJuice.Hosted.getConfig(<?php echo $discojuiceconfig; ?>);
@@ -66,7 +60,7 @@ $discojuiceconfig = '
 			};
 
 	<?php
-	
+
 		echo "
 			djc.metadata.push('" . FoodleUtils::getUrl(). "/extradiscofeed');
 			djc.disco.subIDwritableStores = {};
@@ -79,39 +73,25 @@ $discojuiceconfig = '
 	?>
 
 			djc.callback = IdPDiscovery.setup(djc, acl);
-			
+
 			$(document).ready(function() {
 				$("a.signin").DiscoJuice(djc);
 			});
 
 		</script>
 
-
-
-
-
-
-
-
 </head>
 <body style="background: #ccc">
     <p style="display: none" style="text-align: right"><a class="signin" href="/">signin</a></p>
 
 	<noscript style="">
-		
 		<div style="background: white; border: 1px solid #ccc">
 			<p>Javascript is not enabled in your webbrowser.</p>
-		
 			<p>Please turn on Javascript and refresh the page to continue.</p>
-		
 			<p>If you for some reason are not able to enable javascript, please go a URL similar to this, to login and use foodle.</p>
-		
 			<blockquote><a href="https://foodl.org/login?auth=saml&amp;idp=https://idp.feide.no"><pre><code>https://foodl.org/login?auth=saml&amp;idp=https://idp.feide.no</code></pre></a></blockquote>
-		
 			<p>Replace the idp with the entityid of your idp if you are not using Feide to login</p>.
-		
 		</div>
-		
 	</noscript>
 
 </body>
