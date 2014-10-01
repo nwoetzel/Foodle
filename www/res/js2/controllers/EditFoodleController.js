@@ -1,7 +1,5 @@
 define(function(require, exports) {
 
-
-
 	var 
 		$ = require('jquery'),
 		Class = require('lib/class'),
@@ -36,7 +34,6 @@ define(function(require, exports) {
 		"beforeShowDay": showOnlyFuture
 	};
 
-
 	var showOnlyAfterStart = function(date) {
 
 		// Default is today.
@@ -62,10 +59,8 @@ define(function(require, exports) {
 
 	// console.log("endDatepickerConfig", endDatepickerConfig);
 
-
 	var t = require('lib/text!templates/editfoodle.html');
 	var template = hb.compile(t);
-
 
 	/**
 	 * The EditFoodleController is the main class of both editing and creating new Foodles.
@@ -135,9 +130,7 @@ define(function(require, exports) {
 				this.updateColSelector();
 			}
 
-
 			this.updateDynamics();
-
 
 			var dptimeStart = $('#inputDateStart').datepicker(stdDatepickerConfig);
 			var dptimeEnd   = $('#inputDateEnd'  ).datepicker(endDatepickerConfig);
@@ -151,16 +144,12 @@ define(function(require, exports) {
 				that.updateDynamics();
 			});
 
-
 			var dpdeadline = $('#inputDeadlineDate').datepicker(stdDatepickerConfig);
 			dpdeadline.on('changeDate', function(e) {
 				// console.log("Change date event", e);
 				$("#inputDeadlineCheck").prop('checked', true);
 				that.updateDynamics();
 			});
-
-
-
 
 			$("#inputDeadlineCheck").on('change', function(e) {
 				
@@ -212,7 +201,6 @@ define(function(require, exports) {
 				that.prepareSubmit();
 			});
 
-
 			that.marker = null;
 
 			this.el.on('click', '#actLookupMap', function(e) {
@@ -220,8 +208,6 @@ define(function(require, exports) {
 				that.el.find('#map-canvas').show();
 				that.codeAddress();
 			});
-
-
 		},
 
 		"prepareSubmit": function() {
@@ -261,9 +247,7 @@ define(function(require, exports) {
 
 
 			return !hasError;
-
 		},
-
 
 		"timezoneOK": function(tz) {
 			for(var i = 0; i < window.moment_zones.length; i++) {
@@ -293,10 +277,7 @@ define(function(require, exports) {
 			for(var i = 0; i < window.moment_zones.length; i++) {
 				s.append('<option>' + moment_zones[i] + '</option>');
 			}
-
-
 		},
-
 
 		"setupFeedSelector": function() {
 
@@ -305,7 +286,6 @@ define(function(require, exports) {
 			if (this.user.feeds && this.user.feeds.length > 0) {
 
 				$('#sectionFeed').show();
-
 
 				// $('#feedSelector').append('<option value="_">Select which feed to publish</option>')
 
@@ -319,8 +299,6 @@ define(function(require, exports) {
 			} else {
 				$('#sectionFeed').hide();
 			}
-
-
 		},
 
 		"setupMap": function() {
@@ -335,8 +313,7 @@ define(function(require, exports) {
 			
 			if (true) {
 
-
-				// Try W3C Geolocation (Preferred)
+			// Try W3C Geolocation (Preferred)
 			} else if(navigator.geolocation) {
 
 				browserSupportFlag = true;
@@ -366,7 +343,6 @@ define(function(require, exports) {
 				x.text(collist[i]);
 				$('#inputRestrictionColselector').append(x);
 			}
-
 		},
 
 		/*
@@ -424,8 +400,6 @@ define(function(require, exports) {
 
 			}
 
-
-
 			// 	var enabledCollimit = this.el.find('#enableRestrictionColLimit').prop('checked');
 			// 	if (enabledCollimit) {
 			// 		var no = parseInt(this.el.find('#inputRestrictionColLimit').val(), 10);
@@ -440,10 +414,7 @@ define(function(require, exports) {
 			// 		}
 			// 	}
 
-	
-
 			if (this.foodle.restrictions) {
-
 
 				this.el.find('#enableRestrictions').prop('checked', true);
 				// this.updateColSelector();
@@ -465,8 +436,6 @@ define(function(require, exports) {
 					if (this.foodle.restrictions.col.col) {
 						this.el.find('#inputRestrictionColselector').val(this.foodle.restrictions.col.col);
 					}
-					
-					
 
 				} else {
 					this.el.find('#enableRestrictionColLimit').prop('checked', false);
@@ -481,11 +450,8 @@ define(function(require, exports) {
 				}
 
 			} else {
-
 				this.el.find('#enableRestrictions').prop('checked', false);
-
 			}
-
 
 			if (this.foodle.expire) {
 				var em = moment.unix(parseInt(this.foodle.expire, 10));
@@ -496,8 +462,6 @@ define(function(require, exports) {
 			} else {
 				this.el.find('#enableDeadline').prop('checked', false);
 			}
-
-
 
 			if (this.foodle.allowanonymous) {
 				$('#inputRequireLogin').prop('checked', false);
@@ -511,11 +475,9 @@ define(function(require, exports) {
 				$('#inputResponseTypeMaybe').prop('checked', false);
 			}
 
-
 			if (this.foodle.columntype && this.foodle.columntype === 'dates' ) {
 				// console.error('Not implemented yet');
 			}
-
 
 			if (this.foodle.datetime) {
 				this.el.find('#enableTime').prop('checked', true);
@@ -536,13 +498,9 @@ define(function(require, exports) {
 			if (this.foodle.timezone) {
 				this.el.find('#timezoneselect').val(this.foodle.timezone);
 			}
-
-
-
 		},
 
 		"updateFoodle": function(identifier) {
-
 			
 			// console.log(def);
 			// $("#debug").empty().append(JSON.stringify(def, undefined, 4) );
@@ -558,9 +516,6 @@ define(function(require, exports) {
 				window.location.href = '/foodle/' + identifier;
 
 			});
-
-
-
 		},
 
 		"submitFoodle": function() {
@@ -590,11 +545,8 @@ define(function(require, exports) {
 
 
 				$('#shareURL').attr('value', 'http://foodl.org/foodle/' + identifier);
-
 			});
-
 		},
-
 
 		"codeAddress": function() {
 			var that = this;
@@ -622,7 +574,6 @@ define(function(require, exports) {
 			});
 		},
 
-
 		"getObject": function() {
 			var obj = {};
 			obj.title = $('#inputTitle').val();
@@ -632,7 +583,6 @@ define(function(require, exports) {
 
 			// console.log("User feed", this.user);
 			
-
 			if (this.user.feeds) {
 
 				var fenabled = $('#enableFeed').prop('checked');
@@ -649,10 +599,7 @@ define(function(require, exports) {
 				}
 			}
 
-
-
 			// 'text'; // Or 'dates'
-
 
 			var enableLocation = this.el.find('#enableLocation').prop('checked');
 			if (enableLocation) {
@@ -670,7 +617,6 @@ define(function(require, exports) {
 					obj.location = l;
 				}
 			} 
-
 
 			var enableRestrictions = this.el.find('#enableRestrictions').prop('checked');
 			// console.log("enableRestrictions", enableRestrictions);
@@ -719,8 +665,6 @@ define(function(require, exports) {
 				this.el.find('#sectionRestrictions').hide();
 			}
 
-
-
 			var enableDeadline = this.el.find('#enableDeadline').prop('checked');
 			if (enableDeadline) {
 
@@ -732,21 +676,13 @@ define(function(require, exports) {
 					// console.log("deadline date ", dldate + ' ' + dltime, dl);
 					obj.expire = dl.unix();
 				}
-
-
 			} 
-
 
 			var reqlogin = $('#inputRequireLogin').prop('checked');
 			obj.allowanonymous = !reqlogin;
-			
 
 			var maybe = $('#inputResponseTypeMaybe').prop('checked');
 			obj.responsetype = (maybe ? 'yesnomaybe' : 'yesno');
-
-			
-
-
 
 			var enableTime = this.el.find('#enableTime').prop('checked');
 			// console.log("enableTime", enableTime);
@@ -760,27 +696,22 @@ define(function(require, exports) {
 				var timefrom = this.el.find('#inputTimeStart').val();
 				var timeto   = this.el.find('#inputTimeEnd').val();
 
-
 				// if (datefrom !== '') datetime.datefrom = datefrom;
 				// if (dateto !== '')   datetime.dateto = dateto;
 				// if (timefrom !== '') datetime.timefrom = timefrom;
 				// if (timeto !== '')   datetime.timeto = timeto;
 
-
 				var inputTimeAllDay = this.el.find('#inputTimeAllDay').prop('checked');
 				var inputTimeMultipleDays = this.el.find('#inputTimeMultipleDays').prop('checked');
-
 
 				if (inputTimeAllDay && inputTimeMultipleDays) {
 					
 					if (datefrom !== '') datetime.datefrom = datefrom;
 					if (dateto !== '')   datetime.dateto = dateto;
 
-
 				} else if (inputTimeAllDay && !inputTimeMultipleDays) {
 
 					if (datefrom !== '') datetime.datefrom = datefrom;
-
 
 				} else if (!inputTimeAllDay && inputTimeMultipleDays) {
 
@@ -789,35 +720,26 @@ define(function(require, exports) {
 					if (timefrom !== '') datetime.timefrom = timefrom;
 					if (timeto !== '')   datetime.timeto = timeto;
 
-
 				} else if (!inputTimeAllDay && !inputTimeMultipleDays) {
 
 					if (datefrom !== '') datetime.datefrom = datefrom;
 					if (timefrom !== '') datetime.timefrom = timefrom;
 					if (timeto !== '')   datetime.timeto = timeto;					
-
 				}
 
 				obj.datetime = datetime;
-
 			}
-
 
 			if (enableDeadline || enableTime || 
 				(this.columneditor.getColumntype() === 'dates') || 
 				(this.columneditor.getColumntype() === 'dates2')
 				) {
 
-
 				var tz = this.el.find('#timezoneselect').val();
 				if (this.timezoneOK(tz)) {
 					obj.timezone = tz;
 				}
-
 			}
-
-
-
 
 			return obj;
 		},
@@ -873,7 +795,6 @@ define(function(require, exports) {
 			return x;
 		},
 
-
 		"updateDynamics": function(e) {
 			if (e) {
 				e.stopPropagation(); e.preventDefault();
@@ -890,7 +811,6 @@ define(function(require, exports) {
 				// this.el.find('#map-canvas').hide();
 			}
 
-
 			var enableRestrictions = this.el.find('#enableRestrictions').prop('checked');
 			// console.log("enableRestrictions", enableRestrictions);
 
@@ -900,8 +820,6 @@ define(function(require, exports) {
 				this.el.find('#sectionRestrictions').hide();
 			}
 
-
-
 			var enableDeadline = this.el.find('#enableDeadline').prop('checked');
 			// console.log("enableDeadline", enableDeadline);
 
@@ -910,7 +828,6 @@ define(function(require, exports) {
 			} else {
 				this.el.find('#sectionDeadline').hide();
 			}
-
 
 			var enableTime = this.el.find('#enableTime').prop('checked');
 			// console.log("enableTime", enableTime);
@@ -923,7 +840,6 @@ define(function(require, exports) {
 				this.el.find('#sectionTime').hide();
 				this.el.find('#sectionTimeDetails').hide();
 			}
-
 
 			var inputTimeAllDay = this.el.find('#inputTimeAllDay').prop('checked');
 			var inputTimeMultipleDays = this.el.find('#inputTimeMultipleDays').prop('checked');
@@ -980,11 +896,8 @@ define(function(require, exports) {
 
 			// console.log("start", start);
 			// console.log("end", end);
-
-
 		}
 	})
 
 	return EditFoodleController;
-
 });

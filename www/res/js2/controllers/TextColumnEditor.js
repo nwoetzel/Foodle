@@ -1,7 +1,5 @@
 define(function(require, exports) {
 
-
-
 	var 
 		$ = require('jquery'),
 		Class = require('lib/class'),
@@ -30,7 +28,6 @@ define(function(require, exports) {
 
 			this.el = el;
 			this.el.empty().append(template({"_": _d}));
-
 
 			// Draw table..
 			this.addTable();
@@ -74,8 +71,6 @@ define(function(require, exports) {
 				that.redraw(null, that.modifyNumberOfColumns(null, i, -1) );
 			});
 
-
-
 			// this.setColDef([
 			// 	{"title": "Title 1 <b>sdlfkj</b>'\"sldkfjlsdkjf"},
 			// 	{"title": "Title 2",
@@ -106,10 +101,10 @@ define(function(require, exports) {
 			return obj;
 		},
 
-
 		"on": function(evnt, callback) {
 			this.callbacks[evnt] = callback;
 		},
+
 		"trigger": function(evnt) {
 			var args = Array.prototype.slice.call(arguments, 1);
 			if (this.callbacks && this.callbacks[evnt] && typeof this.callbacks[evnt] === 'function') {
@@ -133,13 +128,7 @@ define(function(require, exports) {
 			return !hasError;
 		},
 
-
-
-
-
 		"getColDef": function() {
-
-
 			var coldef = [];
 
 			var defTable = $('#columnEditorTable');
@@ -152,7 +141,6 @@ define(function(require, exports) {
 				// console.log('Title is ', title);
 
 				if (this.includeOptions) {
-
 					item.children = [];
 
 					for(var j = 0; j < this.subcolumns[i]; j++) {
@@ -164,35 +152,27 @@ define(function(require, exports) {
 						if (si.title !== '') {
 							item.children.push(si);							
 						}
-
 					}
 
 					if (item.children.length === 0) {
 						delete item.children;
 					}
-
 				}
 
 				if (title !== '' || item.hasOwnProperty('children')) {
 					coldef.push(item);	
 				}
-				
-
 			}
+
 			return coldef;
-
-
-
 		},
 
 		"hasTwoLevels": function(coldef) {
-
 			for(var i = 0; i < coldef.length; i++) {
 				// console.log("Checking", coldef[i], )
 				if (coldef[i].hasOwnProperty('children')) return true;
 			}
 			return false;
-
 		},
 
 		"setColDef": function(coldef) {
@@ -205,13 +185,9 @@ define(function(require, exports) {
 				} else {
 					this.subcolumns[i] = 0;
 				}
-
 			}
-
 			// this.redraw(coldef);
-
 		},
-
 
 		/*
 		 * For top column number 'top' and number 'sub' of sub options, then find the number
@@ -228,10 +204,7 @@ define(function(require, exports) {
 			return count;
 		},
 
-
 		"redraw": function(setColdef, modifyNumberOfColumns) {
-
-
 			var coldef = setColdef;
 			if (setColdef) {
 				this.setColDef(setColdef);
@@ -251,14 +224,11 @@ define(function(require, exports) {
 				this.subcolumns = modifyNumberOfColumns.subcolumns;
 			}
 
-
 			this.el.empty().append(template({"_": _d}));
-
 
 			this.el.find('#includeOptions').prop('checked', this.includeOptions);
 
 			this.addTable();
-
 
 			if (this.topcolumns < 2) {
 				$("#removeTopColumn").attr('disabled', 'disabled');
@@ -268,34 +238,25 @@ define(function(require, exports) {
 				$("#addTopColumn").attr('disabled', 'disabled');
 			}
 
-
 			var colNo;
 			var defTable = $('#columnEditorTable');
 			// console.log("Completed redraw, now filling.");
 			for(var i = 0; i < coldef.length; i++) {
-
 				defTable.find('.coldef-header').eq(i).attr('value', coldef[i].title);
 				// console.log("Fill header ", defTable.find('.coldef-header').eq(i), coldef[i].title);
 
 				if (coldef[i].hasOwnProperty('children')) {
-
 					for(var j = 0; j < coldef[i].children.length; j++) {
-
 						colNo = this.getColNo(i, j);
 						console.log("Col no (" + i + "," + j + ")", colNo);
 
 						defTable.find('.coldef-option').eq(colNo).attr('value', coldef[i].children[j].title);
-
 					}
-
 				} 
-
 			}	
 			console.log("Summary", this.topcolumns, this.subcolumns)
 			console.log("-----");
-
 		},
-
 
 		"addTable": function() {
 			var containerTable = $('<table id="columnEditorTable" class="row"></table>').appendTo(this.el.find('#columneditorMain'));
@@ -304,7 +265,6 @@ define(function(require, exports) {
 			containerTable.append(headerRow);
 
 			if (this.includeOptions) {
-
 				var optionsRow = this.getSuboptionsRow();
 				containerTable.append(optionsRow);
 
@@ -312,15 +272,10 @@ define(function(require, exports) {
 				containerTable.append(subc);
 
 				$("#includeOptions").prop('checked', true);
-
 			} else {
-
 				$("#includeOptions").prop('checked', false);
-
 			}
-
 		},
-
 
 		"getHeaderRow": function() {
 			var row = $('<tr></tr>');
@@ -374,10 +329,7 @@ define(function(require, exports) {
 			
 			return row;
 		}
-
-
 	})
 
 	return ColumnEditor;
-
 });

@@ -1,7 +1,5 @@
 define(function(require, exports) {
 
-
-
 	var 
 		$ = require('jquery'),
 		Class = require('lib/class'),
@@ -46,7 +44,6 @@ define(function(require, exports) {
 			this.timezone = tz;
 			this.draw(tz);
 		},
-
 
 		// "drawDates": function() {
 		// 	var coldef = this.foodle.columns;
@@ -102,7 +99,6 @@ define(function(require, exports) {
 		// 	this.el.append(firstrow).append(secondrow);
 		// },
 
-
 		"convertDateColumns": function(input) {
 
 			var coldef = [];
@@ -136,7 +132,6 @@ define(function(require, exports) {
 		},
 
 		"transformDateColumns": function(coldef, toTimezone) {
-
 			var dateno = coldef.dates.length;
 			var slotno = coldef.timeslots.length;
 
@@ -169,17 +164,12 @@ define(function(require, exports) {
 					}
 					dateColumns.push([xsfrom, xsto]);
 				};
-
 			}
 
-
 			return this.convertDateColumns(dateColumns);
-
 		},
 
-
 		"transformDateTimeslotColumns": function(coldef, toTimezone) {
-
 			// var dateno = coldef.dates.length;
 			// var slotno = coldef.timeslots.length;
 
@@ -194,9 +184,7 @@ define(function(require, exports) {
 			// console.log("about to interpret these dates", coldef);
 
 			for(var date in coldef.timeslots) {
-
 				for(var i = 0; i < coldef.timeslots[date].length; i++) {
-
 					// console.log(' › About to process list ', i, date, coldef.timeslots[date][i]);
 					// console.log(coldef.timeslots[date][i]);
 					// console.log(coldef.timeslots[date], i, coldef.timeslots[date][i]);
@@ -224,11 +212,7 @@ define(function(require, exports) {
 			}
 			// console.log("----- › Done");
 			return this.convertDateColumns(dateColumns);
-
 		},
-
-
-
 
 		"interpretOldDateColumn": function(col, toTimezone) {
 			var dateColumns = [];
@@ -275,7 +259,6 @@ define(function(require, exports) {
 						} else {
 							xsto   = xsfrom.clone().add('hours', 1);
 						}
-						
 
 						// console.log("Convert " +strfrom + ' to ' + xsfrom.format('YYYY-MM-DD HH:mm'))
 					} else {
@@ -290,36 +273,30 @@ define(function(require, exports) {
 					dateColumns.push([xsfrom, xsto]);
 				}
 			};
+
 			return this.convertDateColumns(dateColumns);
 		},
 
-
 		"oldFormatAndContainsTimeslots": function() {
-
 			if (this.foodle.columntype && this.foodle.columntype === 'dates' && this.foodle.columns.hasOwnProperty('length')) {
-
 				for (var i = 0; i < this.foodle.columns.length; i++) {
 					var header = this.foodle.columns[i].title;
-
 					if (this.foodle.columns[i].children && this.foodle.columns[i].children.length > 0) {
 
 					} else {
 						return false;
 					}
-
 				}
 				return true;
 			}
 			return false;
 		},
 
-
 		/**
 		 * Walks through two levels of headers and injects content into the <thead> element.
 		 * @return {[type]}           [description]
 		 */
 		"draw": function(tz) {
-
 			// console.error('DRAW ', this.foodle.columns, tz);
 
 			var coldef;
@@ -336,11 +313,9 @@ define(function(require, exports) {
 			var firstrow = $('<tr></tr>');
 			var secondrow = $('<tr></tr>');
 
-
 			firstrow.append('<th rowspan="2" colspan="' + this.extra + '" style="width: 210px">' + window._d.participant + '</th>');
 
 			for(var i = 0; i < coldef.length; i++) {
-
 				var colspan = 1;
 				var rowspan = 1;
 
@@ -354,16 +329,12 @@ define(function(require, exports) {
 				}
 
 				firstrow.append('<th colspan="' + colspan + '" rowspan="' + rowspan + '">' + coldef[i].title + '</th>');
-
 			}
 			firstrow.append('<th rowspan="2">Updated</th>');
 
 			this.el.empty().append(firstrow).append(secondrow);
-
 		}
-
 	})
 
 	return ResponseTableHeadController;
-
 });

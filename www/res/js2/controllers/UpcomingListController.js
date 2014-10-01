@@ -1,7 +1,5 @@
 define(function(require, exports) {
 
-
-
 	var 
 		$ = require('jquery'),
 		Class = require('lib/class'),
@@ -61,5 +59,4 @@ define(function(require, exports) {
 	})
 
 	return UpcomingListController;
-
 });

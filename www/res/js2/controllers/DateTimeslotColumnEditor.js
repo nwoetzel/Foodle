@@ -1,7 +1,5 @@
 define(function(require, exports) {
 
-
-
 	var 
 		$ = require('jquery'),
 		Class = require('lib/class'),
@@ -21,8 +19,6 @@ define(function(require, exports) {
 	// var tslot = require('lib/text!templates/datecolumn-timeslot.html');
 	// var templateTimeslot = hb.compile(tslot);
 
-
-
 	var showOnlyFuture = function(date) {
 		var todaysDate = new Date();
 		todaysDate.setHours(0, 0, 0, 0);
@@ -32,7 +28,6 @@ define(function(require, exports) {
 		}
 		return true;
 	};
-
 
 	var DateTimeslotColumnEditor = Class.extend({
 		"init": function(el, user) {
@@ -116,8 +111,6 @@ define(function(require, exports) {
 			return false;
 		},
 
-
-
 		"validate": function() {
 
 			var x = this.getColDef();
@@ -137,10 +130,7 @@ define(function(require, exports) {
 			}
 
 			return !hasError;
-
 		},
-
-
 
 		// "addTimeslot": function(from, to) {
 
@@ -156,8 +146,6 @@ define(function(require, exports) {
 		// "removeTimeslot": function(el) {
 		// 	el.remove();
 		// },
-
-
 
 		"drawDates": function() {
 
@@ -180,8 +168,6 @@ define(function(require, exports) {
 				tba.appendTo(cc);
 				this.fillTimeslotsIfNeeded(tba.find('.timeslotContainer'));
 			}
-
-
 		},
 
 		"prepareSingleTimeslot": function(f, t) {
@@ -210,7 +196,6 @@ define(function(require, exports) {
 			if (!this.timeslots[date]) return html;
 
 		},
-
 
 		/**
 		 * Check that there always is empty timeslot groups to 
@@ -241,7 +226,6 @@ define(function(require, exports) {
 			
 		},
 
-
 		"getColNo": function(top, sub) {
 			var count = 0;
 			if (top > 0) {
@@ -270,7 +254,6 @@ define(function(require, exports) {
 			}
 
 			this.redraw(coldef);
-
 		},
 
 		"timeIsValid": function(t) {
@@ -279,7 +262,6 @@ define(function(require, exports) {
 			// console.log("Testing ", t, tested);
 			return tested;
 		},
-
 
 		"getColDef": function() {
 
@@ -319,12 +301,7 @@ define(function(require, exports) {
 						
 						// console.error("INVALID Date [" + date + "] " + start + "  " + end);
 					}
-
-					
-
 				});
-
-
 			});
 
 			if (alertmsg) {
@@ -367,8 +344,6 @@ define(function(require, exports) {
 			return true;
 		},
 
-
-
 		"redraw": function(setColdef) {
 			var that = this;
 			var coldef = setColdef;
@@ -409,7 +384,6 @@ define(function(require, exports) {
 				}
 			);
 
-
 			var tz = null;
 			if (coldef.hasOwnProperty('timezone')) {
 				tz = coldef.timezone;
@@ -421,7 +395,6 @@ define(function(require, exports) {
 				alert('This foodle was created using an old version of Foodle. You need to setup the dates again manually. Sorry about that.');
 				return;
 			}
-
 
 			if (coldef.dates.length > 0) {
 				var sd = [];
@@ -442,13 +415,6 @@ define(function(require, exports) {
 
 		},
 
-
-
-
-
-
-
-
 		"getHeaderRow": function() {
 			var row = $('<tr></tr>');
 
@@ -464,7 +430,6 @@ define(function(require, exports) {
 			return row;
 		},
 
-
 		"getSuboptionsRow": function() {
 			var row = $('<tr></tr>');
 
@@ -477,6 +442,7 @@ define(function(require, exports) {
 			}
 			return row;
 		},
+
 		"getSuboptionsControllers": function() {
 			var row = $('<tr></tr>');
 
@@ -501,10 +467,7 @@ define(function(require, exports) {
 			
 			return row;
 		}
-
-
 	})
 
 	return DateTimeslotColumnEditor;
-
 });

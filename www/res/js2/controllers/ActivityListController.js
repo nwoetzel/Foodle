@@ -1,6 +1,5 @@
 define(function(require, exports) {
 
-
     /**
      * dlkfjdfkjg
      */
@@ -41,5 +40,4 @@ define(function(require, exports) {
 	})
 
 	return ActivityListController;
-
 });

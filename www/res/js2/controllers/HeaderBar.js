@@ -1,7 +1,5 @@
 define(function(require, exports) {
 
-
-
 	var 
 		$ = require('jquery'),
 		hb = require('lib/handlebars'),
@@ -14,15 +12,12 @@ define(function(require, exports) {
 	var HeaderBar = Class.extend({
 		"init": function(data) {
 
-
 			this.el = $("#headerbar");
-
 
 			var obj = {
 				"_": window._d,
 				"authenticated": data.authenticated
 			};
-
 
 			if (data.logouturl) {
 				obj.logouturl = data.logouturl;
@@ -32,10 +27,8 @@ define(function(require, exports) {
 			}
 			console.log("Template objet", obj);
 			this.el.append(template(obj));
-			
 		}
 	})
 
 	return HeaderBar;
-
 });

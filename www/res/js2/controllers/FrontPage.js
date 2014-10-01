@@ -1,7 +1,5 @@
 define(function(require, exports) {
 
-
-
 	var 
 		$ = require('jquery'),
 		hb = require('lib/handlebars'),
@@ -40,11 +38,8 @@ define(function(require, exports) {
 				$('.showIfAuthenticated').show();
 				$('.hideIfAuthenticated').hide();
 			}
-
-			
 		}
 	})
 
 	return FrontPage;
-
 });

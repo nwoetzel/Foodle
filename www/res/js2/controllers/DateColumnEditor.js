@@ -1,7 +1,5 @@
 define(function(require, exports) {
 
-
-
 	var 
 		$ = require('jquery'),
 		Class = require('lib/class'),
@@ -21,8 +19,6 @@ define(function(require, exports) {
 	var tslot = require('lib/text!templates/datecolumn-timeslot.html');
 	var templateTimeslot = hb.compile(tslot);
 
-
-
 	var showOnlyFuture = function(date) {
 		var todaysDate = new Date();
 		todaysDate.setHours(0, 0, 0, 0);
@@ -33,11 +29,9 @@ define(function(require, exports) {
 		return true;
 	};
 
-
 	var DateColumnEditor = Class.extend({
 		"init": function(el, user) {
 			var that = this;
-
 
 			this.callbacks = {};
 			this.dates = [];
@@ -64,14 +58,11 @@ define(function(require, exports) {
 				that.addTimeslot();
 			});
 
-
-
 			this.redraw();
 			this.addTimeslot('09:00', '11:00');
 			this.addTimeslot('13:00', '15:00');
 
 			window.g = $.proxy(this.getColDef, this);
-
 		},
 
 		"on": function(evnt, callback) {
@@ -90,8 +81,6 @@ define(function(require, exports) {
 			}
 			return false;
 		},
-
-
 
 		"validate": function() {
 			var x = this.getColDef();
@@ -127,8 +116,6 @@ define(function(require, exports) {
 			el.remove();
 		},
 
-
-
 		"drawDates": function() {
 
 			var cc = this.el.find('#datelisting');
@@ -148,7 +135,6 @@ define(function(require, exports) {
 			}
 
 		},
-
 
 		"getColNo": function(top, sub) {
 			var count = 0;
@@ -278,7 +264,6 @@ define(function(require, exports) {
 				}
 			);
 
-
 			var tz = null;
 			if (coldef.hasOwnProperty('timezone')) {
 				tz = coldef.timezone;
@@ -309,13 +294,6 @@ define(function(require, exports) {
 
 		},
 
-
-
-
-
-
-
-
 		"getHeaderRow": function() {
 			var row = $('<tr></tr>');
 
@@ -331,7 +309,6 @@ define(function(require, exports) {
 			return row;
 		},
 
-
 		"getSuboptionsRow": function() {
 			var row = $('<tr></tr>');
 
@@ -344,6 +321,7 @@ define(function(require, exports) {
 			}
 			return row;
 		},
+
 		"getSuboptionsControllers": function() {
 			var row = $('<tr></tr>');
 
@@ -368,10 +346,7 @@ define(function(require, exports) {
 			
 			return row;
 		}
-
-
 	})
 
 	return DateColumnEditor;
-
 });

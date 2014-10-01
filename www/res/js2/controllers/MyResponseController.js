@@ -1,7 +1,5 @@
 define(function(require, exports) {
 
-
-
 	var 
 		$ = require('jquery'),
 		Class = require('lib/class'),
@@ -19,16 +17,10 @@ define(function(require, exports) {
 	// var t = require('lib/text!templates/foodleresponse.html');
 	// var template = hb.compile(t);
 
-
-
 	var MyResponseController = Class.extend({
-
 		"init": function(api, foodle, user, myresponse, el) {
-
 			var that = this;
 			this.user = user;
-
-
 
 			this.callbacks = {};
 
@@ -56,7 +48,6 @@ define(function(require, exports) {
 				e.stopPropagation();  // e.preventDefault(); 
 				var obj = $(e.currentTarget).find('input');
 
-
 				var val = obj.prop('checked');
 				var colno = obj.data('col');
 
@@ -64,7 +55,6 @@ define(function(require, exports) {
 					val = !val;
 					obj.prop('checked', val);
 				}
-
 
 				if (that.trail) {
 					if (val) {
@@ -80,8 +70,6 @@ define(function(require, exports) {
 					// console.error("Extract", extr);
 				}
 			});
-
-
 
 			this.el.on('click', '.checkRadioCell', function(e) {
 				e.stopPropagation();
@@ -122,13 +110,10 @@ define(function(require, exports) {
 				} else {
 					that.submitResponse();					
 				}
-
 			});
-
 
 			// this.draw();
 			// this.loadResponses();
-
 		},
 
 		"setMyResponse": function(r) {
@@ -139,6 +124,7 @@ define(function(require, exports) {
 		"on": function(evnt, callback) {
 			this.callbacks[evnt] = callback;
 		},
+
 		"trigger": function(evnt) {
 			var args = Array.prototype.slice.call(arguments, 1);
 			if (this.callbacks && this.callbacks[evnt] && typeof this.callbacks[evnt] === 'function') {
@@ -147,7 +133,6 @@ define(function(require, exports) {
 		},
 
 		"registerUser": function(callback) {
-
 			var that = this;
 
 			var name = $('#regName').val();
@@ -169,7 +154,6 @@ define(function(require, exports) {
 				return;
 			}
 
-
 			// console.error('Registering user ', name, email);
 
 			this.api.createAnonymousSession(name, email, function(response) {
@@ -180,15 +164,9 @@ define(function(require, exports) {
 				that.trigger('register', response.user);
 				that.submitResponse();
 			});
-
-
-
 		},
 
-
-
 		"submitResponse": function() {
-
 			// console.log("Processing submitResponse()");
 
 			var response = new FoodleResponse();
@@ -205,16 +183,11 @@ define(function(require, exports) {
 				data.push(0);
 			}
 
-
-
 			for(var i = 0; i < no; i++) {
-
 				// var m = $("input[name='myresp-col-" + i + "']");
 				var x = null;
 
-
 				if (this.foodle.responsetype && this.foodle.responsetype === "yesnomaybe") {
-
 					var m = $("input[name='myresp-col-" + i + "']:checked");
 					if (m.size() > 0) {
 						x = m.val();
@@ -222,7 +195,6 @@ define(function(require, exports) {
 						// this col is not filled out. Defaults to 'null'.
 						// console.error('Did not find a match for ' + "input[name='myresp-col-" + i + "']:checked");
 					}
-
 				} else {
 					x = ($("#myresp-col-" + i).prop('checked') ? 1 : 0);
 				}
@@ -240,14 +212,9 @@ define(function(require, exports) {
 
 			// console.log("Full response data", data);
 			this.trigger('response', response);
-
-
 		},
 
-
-
 		"getResponseCell": function(i) {
-
 			if (parseInt(i, 10) === 1) {
 				return '<td class="responseCellYes"><span class="glyphicon glyphicon-ok"></span></td>';
 			} else if (parseInt(i, 10) === 0) {
@@ -258,18 +225,13 @@ define(function(require, exports) {
 				// console.log("Value was ", i);
 				return '<td class="responseCellFail"><span class="glyphicon glyphicon glyphicon-info-sign"></span></td>';
 			}
-
 		},
 
-
 		"drawSimpleNew": function() {
-
-
 			var no = this.foodle.getColNo(),
 				r;
 
 			var setrow2 = $('<tr></tr>');
-
 
 			if (this.myresponse) {
 				setrow2.append('<th colspan="2" style="text-align: right">Update my response</th>');
@@ -282,13 +244,11 @@ define(function(require, exports) {
 					'</td>');
 			}
 
-
 			if (this.foodle.restrictions && this.foodle.restrictions.checklimit) {
 				this.trail = new Trail(this.foodle.restrictions.checklimit);
 			}
 			
 			for(var i = 0; i < no; i++) {
-
 				var checked = false;
 				if (this.myresponse) {
 					r = this.myresponse.getResponse(i);
@@ -298,7 +258,6 @@ define(function(require, exports) {
 				if (checked && this.trail) {
 					this.trail.check(i);	
 				}
-				
 
 				setrow2.append('<td class="checkCell" style="text-align: center; vertical-align: center">' + 
 					'<input data-col="' + i + '" id="myresp-col-' + i + '" ' + (checked ? ' checked="checked" ' : '') + ' type="checkbox" />' +
@@ -315,7 +274,6 @@ define(function(require, exports) {
 				'</td>');
 			this.el.append(setrow2);
 
-
 			var existingComment = '';
 			if (this.myresponse && this.myresponse.notes) {
 				existingComment = this.myresponse.notes;
@@ -329,27 +287,19 @@ define(function(require, exports) {
 			if (this.user === null) {
 				$('#regName').focus();
 			}
-
 		},
 
-
-
 		"drawMaybe": function() {
-
-
 			var no = this.foodle.getColNo(),
 				r;
-
 
 			if (this.foodle.restrictions && this.foodle.restrictions.checklimit) {
 				this.trail = new Trail(this.foodle.restrictions.checklimit);
 			}
-			
 
 			var setrow1 = $('<tr></tr>');
 			var setrow2 = $('<tr></tr>');
 			var setrow3 = $('<tr></tr>');
-
 
 			if (this.myresponse) {
 				setrow1.append('<th rowspan="3" style="text-align: right">Update my response</th>');
@@ -369,10 +319,7 @@ define(function(require, exports) {
 			setrow2.append(this.getResponseCell(2));
 			setrow3.append(this.getResponseCell(0));
 
-
-			
 			for(var i = 0; i < no; i++) {
-
 				var current = 0;
 				if (this.myresponse) {
 					current = this.myresponse.getResponse(i);
@@ -425,13 +372,9 @@ define(function(require, exports) {
 			if (this.user === null) {
 				$('#regName').focus();
 			}
-
-
 		},
 
-
 		"getResponseCell": function(i) {
-
 			if (parseInt(i, 10) === 1) {
 				return '<td class="responseCellYes"><span class="glyphicon glyphicon-ok"></span></td>';
 			} else if (parseInt(i, 10) === 0) {
@@ -441,8 +384,8 @@ define(function(require, exports) {
 			} else {
 				return '<td class="responseCellFail"><span class="glyphicon glyphicon glyphicon-info-sign"></span></td>';
 			}
-
 		},
+
 		"drawMyResponse": function() {
 			var no = this.foodle.getColNo();
 			var row = $('<tr></tr>');
@@ -452,11 +395,9 @@ define(function(require, exports) {
 				row.append(this.getResponseCell(this.myresponse.getResponse(j)));
 			}
 
-
 			var created = moment.unix(this.myresponse.created);
 			var ct = created.fromNow(true);
 
-			
 			if (this.myresponse.updated !== this.myresponse.created) {
 
 				var udpated = moment.unix(this.myresponse.updated);
@@ -477,28 +418,18 @@ define(function(require, exports) {
 			if (this.foodle.locked() || this.foodle.lockedRestriction()) {
 				// console.error('My response is locked');
 			} else {
-
-			
 				if (this.foodle.responsetype && this.foodle.responsetype === "yesnomaybe") {
 					this.drawMaybe();
 				} else {
 					this.drawSimpleNew();
 				}
-
-
 			}
-
-			
-
 
 			if (this.myresponse) {
 				this.drawMyResponse();
 			}
-
-
-
 		}
 	});
-	return MyResponseController;
 
+	return MyResponseController;
 });

@@ -1,7 +1,5 @@
 define(function(require, exports) {
 
-
-
 	var 
 		$ = require('jquery'),
 		Class = require('lib/class'),
@@ -23,8 +21,6 @@ define(function(require, exports) {
 
 	var t = require('lib/text!templates/foodleresponse.html');
 	var template = hb.compile(t);
-
-
 
 	/**
 	 * The FoodleResponseController is the main controller of the /foodle/identifier response page. 
@@ -50,7 +46,6 @@ define(function(require, exports) {
 			this.geocoder = new google.maps.Geocoder();
 
 			// console.log("›› Foodle object", foodle);
-
 
 			this.loadResponses();
 
@@ -92,7 +87,6 @@ define(function(require, exports) {
 				}
 			});
 
-
 			this.el.on('change', '#timezoneselect', function(e) {
 				e.stopPropagation(); e.preventDefault();
 				that.setTimezone();
@@ -116,12 +110,9 @@ define(function(require, exports) {
 
 			});
 
-
 			this.el.on('click', '#actDelete', function(e) {
 				e.stopPropagation(); e.preventDefault();
 				// console.error('Delete');
-
-
 
 				$('#modalDelete').find('#foodleID').val(that.foodle.identifier);
 
@@ -139,17 +130,9 @@ define(function(require, exports) {
 						// }, 10000);
 
 					});
-
-					
 				});
-
 			});
-			
-
-
 		},
-
-
 
 		"onLoadComplete": function() {
 
@@ -157,9 +140,7 @@ define(function(require, exports) {
 			if (this.loaded) return;
 			this.loaded = true;
 
-
 			this.draw();
-
 		
 			this.myresponse = new MyResponseController(this.api, this.foodle, this.user, null, this.el.find("#mytablebody"));
 			this.myresponse.on('response', $.proxy(this.submitResponse, this));		
@@ -168,7 +149,6 @@ define(function(require, exports) {
 				that.user = user;
 				that.foodle.setUser(user.userid);
 			});				
-
 
 			$('#responseTable').hide();
 			$('#commentPane').hide();
@@ -183,7 +163,6 @@ define(function(require, exports) {
 			this.setupTimezoneController();
 			this.loadDiscussion();
 		},
-
 
 		"submitResponse": function(response) {
 			// console.log("About to submit response through API", response);
@@ -222,7 +201,6 @@ define(function(require, exports) {
 					that.myresponse.setMyResponse(mr);
 
 				// }
-				
 			});
 		},
 
@@ -245,9 +223,6 @@ define(function(require, exports) {
 			});
 		},
 
-
-
-
 		"getResponseCell": function(i) {
 			// console.log("Value is ", i);
 			if (parseInt(i, 10) === 1) {
@@ -259,7 +234,6 @@ define(function(require, exports) {
 			} else {
 				return '<td class="responseCellFail"><span class="glyphicon glyphicon glyphicon-info-sign"></span></td>';
 			}
-
 		},
 
 		"drawResponses": function() {
@@ -267,7 +241,6 @@ define(function(require, exports) {
 			var responses = this.foodle.getResponses();
 
 			// console.log("draw respones", responses, this.foodle);
-
 
 			var c = $('#tablebody').empty();
 
@@ -283,7 +256,6 @@ define(function(require, exports) {
 
 				row.append('<td>' + ustr + '</td>');
 
-
 				// console.log("Processing response ", r.response);
 				for(var j = 0; j < r.response.data.length; j++) {
 					row.append(this.getResponseCell(r.getResponse(j)));
@@ -291,7 +263,6 @@ define(function(require, exports) {
 
 				var created = moment.unix(r.created);
 				var ct = created.fromNow(true);
-
 				
 				if (r.updated !== r.created) {
 
@@ -301,7 +272,6 @@ define(function(require, exports) {
 				} else {
 					row.append('<td><span class="glyphicon glyphicon-time"></span> ' + ct + '</td>');
 				}
-
 				
 				c.append(row);
 
@@ -310,11 +280,8 @@ define(function(require, exports) {
 					var colspan = 2+cols;
 					c.append('<td colspan="' + colspan + '" class="noterow">' + r.notes + '</td>');
 				}
-
-
 			}
 			this.drawResponseSummary();
-
 		},
 
 		"drawDiscussion": function() {
@@ -344,21 +311,16 @@ define(function(require, exports) {
 				c.append(itemel);
 
 				// $('#commentPane').append('<p>' + this.discussion[i].message + '</p>');
-
 			}
 			if (this.discussion.length > 0 ) {
 				$('#discussionCount').empty().append(this.discussion.length).show();	
 			}
-			
-
-
 		},
 
 		"drawResponseSummary": function() {
 
 			if (!this.foodle) return;
 			var responses = this.foodle.getResponses();
-
 
 			var c = [];
 			var tablebody = $('#tablebody');
@@ -371,12 +333,10 @@ define(function(require, exports) {
 			for(var i in responses) {
 				var r = responses[i];
 				for(var j = 0; j < r.response.data.length; j++) {
-
 					if (parseInt(r.response.data[j], 10) === 1) {
 						c[j]++;
 					}
 				}
-
 			}
 
 			var summaryRow = $('<tr class="warning"></tr>');
@@ -388,8 +348,6 @@ define(function(require, exports) {
 			summaryRow.append('<td>&nbsp;</td>');
 
 			tablebody.append(summaryRow);
-
-
 		},
 
 		"isColumntypeDates": function() {
@@ -426,7 +384,6 @@ define(function(require, exports) {
 				mainspan += 3;
 			}
 
-
 			if (this.foodle.location) {
 				this.setLocation();	
 			} else {
@@ -437,32 +394,21 @@ define(function(require, exports) {
 			if (mainspan !== 3) {
 				$("#foodleDescription").removeClass('col-md-3').addClass('col-md-' + mainspan);	
 			}
-			
-
-			
 
 			this.setCreated();
-
 
 			if (this.user && !this.user.anon) {
 				this.upcomingcontroller = new UpcomingListController(this.api, $("#upcoming"), 6, 'slim', this.foodle);	
 			}
-			
-
 
 			var defaultUserTimezone = this.getDefaultTimezone();
 
 			this.th = new ResponseTableHeadController(this.el.find("#tablehead"), this.foodle, 1, defaultUserTimezone);
 			this.mth = new ResponseTableHeadController(this.el.find("#mytablehead"), this.foodle, 2, defaultUserTimezone);
 			// this.mth.highlight = this.foodle;
-
-			
-
-
 		},
 
 		"getDefaultTimezone": function() {
-
 			if (this.user && this.user.timezone && this.timezoneOK(this.user.timezone)) {
 				return this.user.timezone;
 			} else if (this.foodle && this.foodle.timezone && this.timezoneOK(this.foodle.timezone)) {
@@ -470,7 +416,6 @@ define(function(require, exports) {
 			}
 			return null;
 		},
-
 
 		"timezoneOK": function(tz) {
 			for(var i = 0; i < window.moment_zones.length; i++) {
@@ -480,7 +425,6 @@ define(function(require, exports) {
 		},
 
 		"setTimezone": function() {
-
 			var tz = $('#timezoneselect').val();
 			if (this.timezoneOK(tz)) {
 				// console.log("Set new timezone", tz);
@@ -491,17 +435,14 @@ define(function(require, exports) {
 					});					
 				}
 
-
 				this.th.setTimezone(tz);
 				this.mth.setTimezone(tz);
 				this.setTime(tz);
 				this.setDeadline(tz);
 			}
-
 		},
 
 		"setupTimezoneController": function() {
-
 			var that = this;
 			var panel = $('#panelTimezone').show();
 
@@ -511,8 +452,6 @@ define(function(require, exports) {
 
 			var alternativeList = $('<ul class="uninett-ul"></ul>');
 
-
-
 			// console.log("TIMEZONE");
 			// console.log(this.user);
 
@@ -520,21 +459,16 @@ define(function(require, exports) {
 				"source": window.moment_zones
 			});
 
-
-
 			var tz = '';
 			if (this.foodle.hasOwnProperty('timezone')) {
 				tz = this.foodle.timezone;
 			}
-
 
 			var userDefaultTimezone = this.getDefaultTimezone();
 
 			if (userDefaultTimezone) { 
 				s.val(userDefaultTimezone);
 			}
-
-
 
 			if (this.timezoneOK(tz) && this.user && this.timezoneOK(this.user.timezone) && this.user.timezone !== tz) {
 				alternativeList.append('<li class="setTimezoneLink uninett-ul-li" data-timezone="' + tz + '"><a href="#">' + tz + '</a></li>');
@@ -556,8 +490,6 @@ define(function(require, exports) {
 			// for(var i = 0; i < window.moment_zones.length; i++) {
 			// 	s.append('<option>' + moment_zones[i] + '</option>');
 			// }
-
-
 		},
 
 
@@ -576,18 +508,14 @@ define(function(require, exports) {
 				c.append('<div style="border: 1px solid #444; height: 200px" id="location-canvas"></div>');
 			}
 
-
 			if (this.foodle.location.local) {
 				c.append('<p class="loc-local">' + this.foodle.location.local + '</p>');
 			}
 
-
 			if (this.foodle.location.address) {
-
 				c.append('<p>' + this.foodle.location.address + '</p>');
 
 				this.codeAddress(this.foodle.location.address, function(loc) {
-
 					that.map = new google.maps.Map(document.getElementById("location-canvas"), {
 						center: loc,
 						zoom: 11
@@ -596,13 +524,10 @@ define(function(require, exports) {
 						map: that.map,
 						position: loc
 					});
-
 				});
-
-
 			}
-
 		},
+		
 		"codeAddress": function (address, callback) {
 			var that = this;
 			this.geocoder.geocode( { 'address': address}, function(results, status) {
@@ -624,7 +549,6 @@ define(function(require, exports) {
 			});
 		},
 
-
 		"setTime": function(toTimezone) {
 			if (!this.foodle.datetime) {
 				this.el.find('#panelTime').hide();
@@ -635,10 +559,8 @@ define(function(require, exports) {
 			var ct = $('#sectTime').empty();
 			var mf, mt;
 
-
 			var doTimezone = false;
 			if (this.foodle.timezone && toTimezone) doTimezone = true;
-
 
 			// console.log("Set time", dt);
 
@@ -659,7 +581,6 @@ define(function(require, exports) {
 					mt = moment(dt.dateto   + ' ' + dt.timeto,   'YYYY-MM-DD HH:mm');
 				}
 
-
 				ct.append('<p>' + mf.format('ddd Do MMM, YYYY, HH:mm') + '</p>');
 				ct.append('<p>to</p>');
 				ct.append('<p>' + mt.format('ddd Do MMM, YYYY, HH:mm') + '</p>');
@@ -673,7 +594,6 @@ define(function(require, exports) {
 					mf = moment(dt.datefrom + ' ' + dt.timefrom, 'YYYY-MM-DD HH:mm');
 					mt = moment(dt.datefrom + ' ' + dt.timeto,   'YYYY-MM-DD HH:mm');
 				}
-
 
 				ct.append('<p class="s-lg">' + mf.format('ddd Do MMM, YYYY') + '</p>');
 				ct.append('<p class="s-lg">' + mf.format('HH:mm') + ' – ' + mt.format('HH:mm') + '</p>');
@@ -689,11 +609,9 @@ define(function(require, exports) {
 			if (mf && mt) {
 				ct.append('<p class="time-duration">Event last for ' + mt.from(mf, true) + '</p>');	
 			}
-
 		},
 
 		"setRestrictions": function() {
-
 			if (!this.foodle.restrictions) {
 				this.el.find('#panelRestrictions').hide();
 				return;
@@ -728,7 +646,6 @@ define(function(require, exports) {
 			if (r.checklimit) {
 				container.append('<p>You may check max ' + r.checklimit + ' columns in your response.</p>');
 			}
-
 		},
 
 		"setDeadline": function(toTimezone) {
@@ -759,7 +676,6 @@ define(function(require, exports) {
 			container
 				.append('<p class="uninett-fontColor-red">' + str + '</p>')
 				.append('<p class="time-fromnow">Respond within ' + dlts.fromNow(true) + '</p>');
-
 		},
 
 		"setCreated": function() {
@@ -784,13 +700,9 @@ define(function(require, exports) {
 				str += ' Updated '+ u.fromNow();
 			}
 
-
 			statusline.append(str);
-
 		}
-
 	})
 
 	return FoodleResponseController;
-
 });

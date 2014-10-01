@@ -1,7 +1,5 @@
 define(function(require, exports) {
 
-
-
 	var
 		$ = require('jquery'),
 		Class = require('lib/class'),
@@ -67,11 +65,7 @@ define(function(require, exports) {
 				}
 			};
 
-
-
-
 			this.setCurrent('text');
-
 		},
 
 		"validate": function() {
@@ -114,7 +108,6 @@ define(function(require, exports) {
 			}
 		},
 
-
 		"getColNo": function(top, sub) {
 			return this.current().getColNo(top, sub);
 		},
@@ -122,7 +115,6 @@ define(function(require, exports) {
 		"setColDef": function(coldef) {
 			return this.current().setColDef(coldef);
 		},
-
 
 		"getColDef": function() {
 			return this.current().getColDef();
@@ -141,7 +133,6 @@ define(function(require, exports) {
 			return this.current().addTable();
 		},
 
-
 		"getHeaderRow": function() {
 			return this.current().addTable();
 		},
@@ -152,10 +143,7 @@ define(function(require, exports) {
 		"getSuboptionsControllers": function() {
 			return this.current().getSuboptionsControllers();
 		}
-
-
 	})
 
 	return ColumnEditor;
-
 });
